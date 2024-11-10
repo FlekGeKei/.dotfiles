@@ -25,7 +25,7 @@ btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
 genfstab
 
-pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs grub grub-btrfs inotify-tools timeshift neovim networkmanager intel-ucode/amd-ucode man
+pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs grub grub-btrfs inotify-tools timeshift neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft
 genfstab -U /mnt >> /mnt/etc/fstab
 # control all <options> specially for swap subvol
 cat /mnt/etc/fstab
@@ -89,11 +89,18 @@ yay -S timeshift-autosnap
 
 ### for my dotfiles
 
+sudo setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+
 sudo pacman -S texlive
 
 systemctl --user enable syncthing.service
-yay -S ctpv coppwr pwvucontrol qt5-styleplugins qt6gtk2 megasync-bin
-sudo setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+
+yay -S ctpv coppwr pwvucontrol
+
+ysy -S qt5-styleplugins qt6gtk2
+sudo pacman -S qt6ct qt5ct
+
+yay -S  megasync-bin
 
 
 yay -S protonup-qt-bin
