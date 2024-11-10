@@ -1,0 +1,134 @@
+	* {
+	  font-family: Noto Sans;
+	  font-size: 16px;
+	  padding-top: 0;
+	  padding-bottom: 0;
+	}
+
+	window#waybar {
+	  background-color: #3f3f3f;
+	}
+
+	window#waybar.hidden {
+	  opacity: 0.2;
+	}
+
+	/*
+	window#waybar.empty {
+	  background-color: transparent;
+	}
+	window#waybar.solo {
+	  background-color: #FFFFFF;
+	}
+	*/
+
+	window#waybar.termite {
+	  background-color: #3F3F3F;
+	}
+
+	#custom-iris {
+	  color: #ffffff;
+	  background-color: #3f3f3f;
+	}
+
+	#language {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#mpd {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#tray {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#language {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#network {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#battery {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#backlight {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#wireplumber {
+	  background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#clock {
+          background-color: #3F3F3F;
+	  color: #FFFFFF;
+	}
+
+	#bluetooth {
+	  background-color: #3f3f3f;
+	  color: #ffffff;
+	}
+
+	#workspaces {
+	  background-color: #3f3f3f;
+	  color: #ffffff;
+	}
+
+	#workspaces button {
+	  background-color: #3f3f3f;
+	  color: #ffffff;
+	}
+
+	#workspaces button.active {
+	  border-radius: 0px;
+	  box-shadow: inset 0 3px #ffffff;
+	  color: #ffffff;
+	  background-color: #3f3f3f;
+	}
+
+	#workspaces button.empty {
+	  background-color: #3F3F3F;
+	  color: #a1a9b1;
+	}
+	
+	#workspaces button.visible {
+	  background-color: #3F3F3F;
+	  color: #ffffff;
+	}
+
+	#workspaces button.special {
+	  background-color: #3F3F3F;
+	  color: #ff0000;
+	}
+
+	#workspaces button.urgent{
+	  color: #ff0000;
+	  background-color: #3f3f3f;
+	}
+
+	#cpu {
+	  color: #ffffff;
+	  background-color: #3f3f3f;
+	}
+
+	#memory {
+	  color: #ffffff;
+	  background-color: #3f3f3f;
+	}
+
+	#temperature {
+	  color: #ffffff;
+	  background-color: #3f3f3f;
+	}
