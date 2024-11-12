@@ -10,22 +10,69 @@ cfdisk /dev/nvme0n1
   efi 512M
   linux filesystem rest
 mkfs.vfat /dev/nvme0n1p1
-mkfs.btrfs /dev/nvme0n1p2
+mkfs.btrfs -L "Arch Linux" /dev/nvme0n1p2 # -L is for refind
 
+# for snapper (for timeshift use landout for archwiki)
 mount /dev/nvme0n1p2 /mnt
 btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home 
-btrfs subvolume create /mnt/@swap
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@.snapshots
+btrfs subvolume create /mnt/@.swap
+btrfs subvolume create /mnt/@srv
+btrfs subvolume create /mnt/@var_log
+btrfs subvolume create /mnt/@var_cache
 umount /mnt
-mount -o compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
-mount -o compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
-mount -o nodatacow,nospace_cach,subvol=@swap /dev/nvme0n1p2 /mnt/swap
+mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
+mkdir -p /mnt/home
+mkdir -p /mnt/.swap
+mkdir -p /mnt/.snapshots
+mkdir -p /mnt/srv
+mkdir -p /mnt/var/log
+mkdir -p /mnt/var/cache
+umount -R /mnt
+mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
+mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
+mount -o noatime,compress=zstd,subvol=@.snapshots /dev/nvme0n1p2 /mnt/.snapshots
+mount -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
+mount -o noatime,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
+mount -o noatime,compress=zstd,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cache
 mount /dev/nvme0n1p1 /mnt/efi
 btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
-genfstab
+genfstab -U /mnt >> /mnt/etc/fstab
+vim /mnt/etc/fstab 
+||
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/         	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=256,subvol=/@	0 0
 
-pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs grub grub-btrfs inotify-tools timeshift neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/home     	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=257,subvol=/@home	0 0
+
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/.snapshots	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=258,subvol=/@.snapshots	0 0
+
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/.swap    	btrfs     	rw,noatime,nodatacow,ssd,discard=async,space_cache=v2,subvolid=259,subvol=/@.swap	0 0
+
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/srv    	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=260,subvol=/@srv	0 0
+
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/log  	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=261,subvol=/@var_log	0 0
+
+# /dev/nvme0n1p2
+UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/cache	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=262,subvol=/@var_cache	0 0
+
+# /dev/nvme0n1p1
+UUID=8C41-593A      	/efi      	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+# /.swap/swapfile
+/.swap/swapfile		none		swap		defaults	0 0
+||
+
+
+pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft 
 genfstab -U /mnt >> /mnt/etc/fstab
 # control all <options> specially for swap subvol
 cat /mnt/etc/fstab
@@ -39,9 +86,42 @@ nvim /etc/vconsole.conf
 echo "fgk" >> /etc/hostname
 nvim /etc/hosts
 mkinitcpio -P
-pacman -S grub-btrfs inotify-tools
+
+# you can choose refind or grub
+# gurb
+pacman -S grub grub-btrfs inotify-tools
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+# refind
+pacman -S refind
+refind-install --alldrivers
+nvim /efi/EFI/refind/refind.conf
+# finde arch linux and change it to look like this
+# if you use amd cpu then change intel-ucode.img to amd-ucode.img
+||
+menuentry "Arch Linux" {
+    icon     /EFI/refind/icons/os_arch.png
+    volume   "Arch Linux"
+    loader   /@/boot/vmlinuz-linux
+    initrd   /@/boot/initramfs-linux.img
+    options  "root=PARTUUID=5028fa50-0079-4c40-b240-abfaf28693ea rw add_efi_memmap rootflags=subvol=@ initrd=@\boot\intel-ucode.img"
+    submenuentry "Boot using fallback initramfs" {
+        initrd /boot/initramfs-linux-fallback.img
+    }
+    submenuentry "Boot to terminal" {
+        add_options "systemd.unit=multi-user.target"
+    }
+    disabled
+}
+||
+nvim /boot/refind_linux.conf
+# and fix 
+||
+"Boot with standard options"  "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@"
+"Boot to single-user mode"    "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@ single"
+"Boot with minimal options"   "ro root=/dev/nvme0n1p2"
+||
+
 passwd
 systemctl enable NetworkManager
 systemctl enable nftables
@@ -56,12 +136,23 @@ systemctl edit --full grub-btrfsd
 systemctl enable grub-btrfsd
 timedatectl set-ntp true
 nvim /etc/pacman.conf 
-pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse htop hyprland gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look npm pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland
+pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse htop hyprland gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look npm pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist
 
 systemctl enable libvirtd
 systemctl enable bluetooth
 
 echo "vm.max_map_count = 2147483642" >> /etc/sysctl.d/80-gamecompatibility.conf
+
+# snapper 
+pacman -S snapper
+umount /.snapshots
+rm -fr .snapshots
+snapper -c root create-config /
+btrfs subvolume delete /.snapshots 
+mkdir /.snapshots/
+mount -o noatime,compress=zstd,subvolume=@.snapshots /dev/nvme0n1p2 /.snapshots
+nvim /etc/snapper/configs/root
+# look at achwiki
 
 
 # put '!' behind debug flag in makepkg.cfg like hire:
