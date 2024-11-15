@@ -16,6 +16,12 @@ application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
 x-scheme-handler/tonsite=org.telegram.desktop.desktop
+image/png=imv.desktop
+image/jpeg=imv.desktop
+image/svg=imv.desktop
+image/tiff=imv.desktop
+image/gif=imv.desktop
+image/heif=imv.desktop
 
 [Added Associations]
 x-scheme-handler/tg=org.telegram.desktop.desktop;

@@ -139,7 +139,14 @@ nvim /etc/pacman.conf
 pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse htop hyprland gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look npm pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist
 
 systemctl enable libvirtd
+
 systemctl enable bluetooth
+nvim /etc/bluetooth/main.conf 
+# set "MultiProfile" to "multiple" 
+||
+[General]
+MultiProfile=multiple
+||
 
 echo "vm.max_map_count = 2147483642" >> /etc/sysctl.d/80-gamecompatibility.conf
 

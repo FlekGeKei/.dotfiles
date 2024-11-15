@@ -33,6 +33,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
+export PATH=${PATH}:${HOME}/.local/bin
+
 # aliaces
 alias ls='eza'
 alias l='eza -l -a'

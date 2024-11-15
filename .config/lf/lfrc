@@ -23,3 +23,58 @@ cmd fzf_search ${{
         #--preview='~/.config/lf/cleaner; ~/.config/lf/previewer {1} "$FZF_PREVIEW_COLUMNS" "$FZF_PREVIEW_LINES" "$FZF_PREVIEW_LEFT" "$FZF_PREVIEW_TOP"')"
 }}
 map gs :fzf_search
+
+cmd stripvideolayer ${{
+    clear
+    set -f
+
+    # Variables for notify-send
+    converted_filenames=""
+    converted_files_count=0
+    videos_without_audio_streams=""
+    videos_without_audio_streams_count=0
+
+    for pickedFilepath in $fx; do
+        case $pickedFilepath in
+	    *.mp4 | *.webm | *.mkv) ;;
+	    *) echo "Skipping $pickedFilepath" && continue 1;;
+        esac
+
+        parsed_MP3="$(printf '%s' "$pickedFilepath" | sed 's/\(.mp4\|.webm\|.mkv\)/.mp3/' | sed 's|.*\/||')"
+        parsed_MP3="$HOME/.lf_converted/$parsed_MP3"
+
+        # Using ffprobe because videos without audiostream result in exit code 1 which stops this entire loop of many files
+        # Remove (alongside its 2 variables) if you don't record videos without audio (which are admittedly rare)
+        if [[ $(ffprobe -loglevel error -show_entries stream=codec_type -of csv=p=0 "$pickedFilepath") != *"audio"* ]]; then
+            ((videos_without_audio_streams_count=videos_without_audio_streams_count+1))
+            videos_without_audio_streams="$videos_without_audio_streams"$'\n'"$pickedFilepath"
+            continue 1
+        fi
+
+        ffmpeg -i "$pickedFilepath" "$parsed_MP3"
+
+        ((converted_files_count=converted_files_count+1))
+        converted_filenames="$converted_filenames"$'\n'"$pickedFilepath"
+
+        if [[ $# -eq 1 ]]; then
+            rm -f -- "$pickedFilepath"
+        fi
+    done
+
+    # Notify the results to the user
+    if [[ $converted_files_count -gt 0 ]]; then
+        converted_filenames=$(echo "$converted_filenames" | sed 's|.*\/||')
+        notify-send "Converted MP3 Files($converted_files_count):" "$converted_filenames"
+    fi
+
+    if [[ $videos_without_audio_streams_count -gt 0 ]]; then
+        videos_without_audio_streams=$(echo "$videos_without_audio_streams" | sed 's|.*\/||')
+        notify-send "Videos without audio stream($videos_without_audio_streams_count):" "$videos_without_audio_streams"
+    fi
+
+    # Uncomment the below line if you want to automatically unselect the original converted video files
+    #lf -remote "send $id unselect"
+}}
+
+map u stripvideolayer
+map <a-u> stripvideolayer delete_after_encoding
