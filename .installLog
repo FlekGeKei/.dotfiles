@@ -123,14 +123,6 @@ nvim /boot/refind_linux.conf
 "Boot to single-user mode"    "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@ single"
 "Boot with minimal options"   "ro root=/dev/nvme0n1p2"
 ||
-# install normal theme
-cd /efi/EFI/refind/
-mkdir themes
-cd theme
-# clone your theme 
-git clone https://github.com/bobafetthotmail/refind-theme-regular
-# add "include themes/refind-theme-regular/theme.conf"
-nvim /efi/EFI/refind/refind.conf
 
 
 passwd
@@ -215,6 +207,7 @@ yay -S  megasync-bin
 yay -S protonup-qt-bin
 
 
+# add refind setings
 # secure boot in refind 
 yay -S shim-signed
 sudo pacman -S sbsigntools 
@@ -255,4 +248,59 @@ Target=refind
 Description = Updating rEFInd on ESP
 When=PostTransaction
 Exec=/usr/bin/refind-install --alldrivers --shim /usr/share/shim-signed/shimx64.efi --localkeys --yes
+||
+# install normal theme
+cd /efi/EFI/refind/
+mkdir themes
+cd theme
+# clone your theme 
+git clone https://github.com/bobafetthotmail/refind-theme-regular
+# add "include themes/refind-theme-regular/theme.conf"
+nvim /efi/EFI/refind/refind.conf
+
+# install utilities with pacman hooks
+# memtest86+
+sudo pacman -S memtest86+-efi
+sudo cp /boot/memtest86+/memtest.efi /efi/EFI/tools/memtest86.efi
+nvim /etc/pacman.d/hooks/memtest86+.hook
+||
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=memtest86+-efi
+
+[Action]
+Description = Updating memtest86+ on ESP
+When=PostTransaction
+Exec=/usr/bin/cp -fr /boot/memtest86+/memtest.efi /efi/EFI/tools/memtest86.efi
+||
+# UEFI shell
+sudo pacman -S edk2-shell
+sudo cp /usr/share/edk2-shell/x64/Shell_Full.efi /efi/EFI/tools/shell.efi
+nvim /etc/pacman.d/hooks/edk2-shell.hook
+||
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=edk2-shell
+
+[Action]
+Description = Updating edk2-shell on ESP
+When=PostTransaction
+Exec=/usr/bin/cp -fr /usr/share/edk2-shell/x64/Shell_Full.efi /efi/EFI/tools/shell.efi
+||
+# fwupd-efi
+sudo pacman -S fwupd fwupd-efi
+sudo cp /usr/lib/fwupd/efi/fwupdx64.efi /efi/EFI/tools
+nvim /etc/pacman.d/hooks/fwupd-efi.hook
+||
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=fwupd-efi
+
+[Action]
+Description = Updating fwupd-efi on ESP
+When=PostTransaction
+Exec=/usr/bin/usr/lib/fwupd/efi/fwupdx64.efi /efi/EFI/tools
 ||
