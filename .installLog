@@ -259,9 +259,10 @@ git clone https://github.com/bobafetthotmail/refind-theme-regular
 nvim /efi/EFI/refind/refind.conf
 
 # install utilities with pacman hooks
+# if you don't use secureboot just replace all sbsign commands by cp commands (see arch wiki)
 # memtest86+
 sudo pacman -S memtest86+-efi
-sudo cp /boot/memtest86+/memtest.efi /efi/EFI/tools/memtest86.efi
+sudo sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /boot/memtest86+/memtest.efi --output /efi/EFI/tools/memtest86.efi
 nvim /etc/pacman.d/hooks/memtest86+.hook
 ||
 [Trigger]
@@ -272,11 +273,12 @@ Target=memtest86+-efi
 [Action]
 Description = Updating memtest86+ on ESP
 When=PostTransaction
-Exec=/usr/bin/cp -fr /boot/memtest86+/memtest.efi /efi/EFI/tools/memtest86.efi
+Exec=/usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /boot/memtest86+/memtest.efi --output /efi/EFI/tools/memtest86.efi
+Depends=sbsigntools
 ||
 # UEFI shell
 sudo pacman -S edk2-shell
-sudo cp /usr/share/edk2-shell/x64/Shell_Full.efi /efi/EFI/tools/shell.efi
+sudo sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/share/edk2-shell/x64/Shell_Full.efi --output /efi/EFI/tools/shell.efi
 nvim /etc/pacman.d/hooks/edk2-shell.hook
 ||
 [Trigger]
@@ -287,20 +289,6 @@ Target=edk2-shell
 [Action]
 Description = Updating edk2-shell on ESP
 When=PostTransaction
-Exec=/usr/bin/cp -fr /usr/share/edk2-shell/x64/Shell_Full.efi /efi/EFI/tools/shell.efi
-||
-# fwupd-efi
-sudo pacman -S fwupd fwupd-efi
-sudo cp /usr/lib/fwupd/efi/fwupdx64.efi /efi/EFI/tools
-nvim /etc/pacman.d/hooks/fwupd-efi.hook
-||
-[Trigger]
-Operation=Upgrade
-Type=Package
-Target=fwupd-efi
-
-[Action]
-Description = Updating fwupd-efi on ESP
-When=PostTransaction
-Exec=/usr/bin/usr/lib/fwupd/efi/fwupdx64.efi /efi/EFI/tools
+Exec=/usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/share/edk2-shell/x64/Shell_Full.efi --output /efi/EFI/tools/shell.efi
+Depends=sbsigntools
 ||
