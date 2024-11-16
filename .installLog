@@ -87,11 +87,13 @@ echo "fgk" >> /etc/hostname
 nvim /etc/hosts
 mkinitcpio -P
 
+
 # you can choose refind or grub
 # gurb
 pacman -S grub grub-btrfs inotify-tools
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+
 # refind
 pacman -S refind
 refind-install --alldrivers
@@ -121,6 +123,15 @@ nvim /boot/refind_linux.conf
 "Boot to single-user mode"    "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@ single"
 "Boot with minimal options"   "ro root=/dev/nvme0n1p2"
 ||
+# install normal theme
+cd /efi/EFI/refind/
+mkdir themes
+cd theme
+# clone your theme 
+git clone https://github.com/bobafetthotmail/refind-theme-regular
+# add "include themes/refind-theme-regular/theme.conf"
+nvim /efi/EFI/refind/refind.conf
+
 
 passwd
 systemctl enable NetworkManager
@@ -202,3 +213,46 @@ yay -S  megasync-bin
 
 
 yay -S protonup-qt-bin
+
+
+# secure boot in refind 
+yay -S shim-signed
+sudo pacman -S sbsigntools 
+su 
+refind-install --alldrivers --shim /usr/share/shim-signed/shimx64.efi --localkeys --yes
+sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt --output /boot/vmlinuz-linux /boot/vmlinuz-linux
+# https://www.rodsbooks.com/refind/secureboot.html
+# automate kernel signing 
+nvim /etc/initcpio/post/kernel-sbsign
+|| https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Signing_the_kernel_with_a_mkinitcpio_post_hook
+#!/usr/bin/env bash
+
+kernel="$1"
+[[ -n "$kernel" ]] || exit 0
+
+# use already installed kernel if it exists
+[[ ! -f "$KERNELDESTINATION" ]] || kernel="$KERNELDESTINATION"
+
+keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.crt)
+
+for (( i=0; i<${#keypairs[@]}; i+=2 )); do
+    key="${keypairs[$i]}" cert="${keypairs[(( i + 1 ))]}"
+    if ! sbverify --cert "$cert" "$kernel" &>/dev/null; then
+        sbsign --key "$key" --cert "$cert" --output "$kernel" "$kernel"
+    fi
+done
+||
+chmod +x /etc/initcpio/post/kernel-sbsign
+# automate refind updating
+nvim /etc/pacman.d/hooks/refind.hook
+|| https://wiki.archlinux.org/title/REFInd#Pacman_hook
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=refind
+
+[Action]
+Description = Updating rEFInd on ESP
+When=PostTransaction
+Exec=/usr/bin/refind-install --alldrivers --shim /usr/share/shim-signed/shimx64.efi --localkeys --yes
+||
