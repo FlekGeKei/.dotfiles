@@ -1,203 +1,204 @@
-[
-  {
-    "height": 25,
-    "layer": "top",
+// your bar height should be 2.31481481481481481481% of your screen height
 
-    "modules-center": [],
-    "modules-left": [
-      "hyprland/workspaces",
-      "mpd"
+{
+  "height": 25,
+  "layer": "top",
+
+  "modules-center": [],
+  "modules-left": [
+    "hyprland/workspaces",
+    "mpd"
+  ],
+  "modules-right": [
+    "tray",
+    "hyprland/language",
+    "network",
+    "bluetooth",
+    "cpu",
+    "custom/iris",
+    "memory",
+    "battery",
+    "battery#bat2",
+    "backlight",
+    "wireplumber",
+    "clock"
+  ],
+
+
+  "backlight": {
+    "device": "intel_backlight",
+    "format": " {percent}% {icon} ",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "battery": {
+    "format": " {capacity}% {icon}",
+    "format-alt": "{time} {icon}",
+    "format-charging": " {capacity}% 󰂄",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
     ],
-    "modules-right": [
-      "tray",
-      "hyprland/language",
-      "network",
-      "bluetooth",
-      "cpu",
-      "custom/iris",
-      "memory",
-      "battery",
-      "battery#bat2",
-      "backlight",
-      "wireplumber",
-      "clock"
+    "format-plugged": " {capacity}% 󰚥"
+  },
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+  "bluetooth": {
+    "on-click": "blueman-manager",
+    "format-connected": " {device_alias} ",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}% ",
+    "format-device-preference": [
+      "device1",
+      "device2"
     ],
-
-
-    "backlight": {
-      "device": "intel_backlight",
-      "format": " {percent}% {icon} ",
-      "format-icons": [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-      ]
+    "format-disabled": "",
+    "format-off": "",
+    "format-on": "",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
+  },
+  "clock": {
+    "actions": {
+      "on-click-backward": "tz_down",
+      "on-click-forward": "tz_up",
+      "on-click-right": "mode",
+      "on-scroll-down": "shift_down",
+      "on-scroll-up": "shift_up"
     },
-    "battery": {
-      "format": " {capacity}% {icon}",
-      "format-alt": "{time} {icon}",
-      "format-charging": " {capacity}% 󰂄",
-      "format-icons": [
-        "󰂎",
-        "󰁺",
-        "󰁻",
-        "󰁼",
-        "󰁽",
-        "󰁾",
-        "󰁿",
-        "󰂀",
-        "󰂁",
-        "󰂂",
-        "󰁹"
-      ],
-      "format-plugged": " {capacity}% 󰚥"
-    },
-    "battery#bat2": {
-      "bat": "BAT2"
-    },
-    "bluetooth": {
-      "format-connected": " {device_alias} ",
-      "format-connected-battery": " {device_alias} {device_battery_percentage}% ",
-      "format-device-preference": [
-        "device1",
-        "device2"
-      ],
-      "format-disabled": "",
-      "format-off": "",
-      "format-on": "",
-      "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-      "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-      "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-    },
-    "clock": {
-      "actions": {
-        "on-click-backward": "tz_down",
-        "on-click-forward": "tz_up",
-        "on-click-right": "mode",
-        "on-scroll-down": "shift_down",
-        "on-scroll-up": "shift_up"
+    "calendar": {
+      "format": {
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "monts": "<span color='#ffead3'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>"
       },
-      "calendar": {
-        "format": {
-          "days": "<span color='#ecc6d9'><b>{}</b></span>",
-          "monts": "<span color='#ffead3'><b>{}</b></span>",
-          "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
-          "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-          "weeks": "<span color='#99ffdd'><b>W{}</b></span>"
-        },
-        "mode": "mode",
-        "mode-mon-col": 3,
-        "on-scroll": 1,
-        "wiiks-pos": "right"
-      },
-      "format": " {:%I:%M %p}  ",
-      "locale": "en_GB.UTF-8",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>"
+      "mode": "mode",
+      "mode-mon-col": 3,
+      "on-scroll": 1,
+      "wiiks-pos": "right"
     },
-    "cpu": {
-      "format": " {usage}%  ",
-      "tooltip": true
-    },
-    "custom/iris": {
-      "exec": "~/.config/waybar/scripts/iris.sh",
-      "format": "{}%  ",
-      "interval": "10",
-      "return-type": "json",
-      "tooltip": true
-    },
-    "hyprland/language": {
-      "format": " {}  ",
-      "format-en": "US",
-      "format-ru": "RU",
-      "keyboard-name": "at-translated-set-2-keyboard"
-    },
-    "hyprland/workspaces": {
-      "persistent-workspaces": {
-        "*": 10
-      }
-    },
-    "memory": {
-      "format": " {used}G  ",
-      "interval": 30,
-      "max-length": 10
-    },
-    "mpd": {
-      "consume-icons": {
-        "on": " "
-      },
-      "format": " {stateIcon} {consumeIcon}{singleIcon} {artist} - {title} ",
-      "format-disconnected": " Disconnected ",
-      "format-stopped": " {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped",
-      "interval": 10,
-      "on-click": "mpc toggle",
-      "on-click-right": "mpc next",
-      "on-scroll-down": "mpc volume -1",
-      "on-scroll-up": "mpc volume +1",
-      "port": "6600",
-      "random-icons": {
-        "off": "<span color=\"#f53c3c\"></span> ",
-        "on": " "
-      },
-      "repeat-icons": {
-        "on": " "
-      },
-      "server": "localhost",
-      "single-icons": {
-        "on": " 1 "
-      },
-      "state-icons": {
-        "paused": "",
-        "playing": ""
-      },
-      "tooltip-format": "MPD {elapsedTime:%M:%S}/{totalTime:%M:%S} ({volume}%)",
-      "tooltip-format-disconnected": " MPD (disconnected)"
-    },
-    "network": {
-      "format-disconnected": " ",
-      "format-icons": [
-        "󰤯",
-        "󰤟",
-        "󰤢",
-        "󰤥",
-        "󰤨"
-      ],
-      "format-wifi": " {signalStrength}% {icon} ",
-      "interval": "10",
-      "tooltip-format": "{essid} {ifname} via {gwaddr}  "
-    },
-    "temperature": {
-      "critical-threshold": 80,
-      "format": "{temperatureC}°C {icon}",
-      "format-icons": [
-        "",
-        "",
-        "",
-        ""
-      ],
-      "hwmon-path": "/sys/class/hwmon/hwmon0/temp1_input"
-    },
-    "tray": {
-      "icon-size": 20,
-      "spacing": 10
-    },
-    "wireplumber": {
-      "format": "{volume}% {icon}",
-      "format-icons": [
-        "",
-        " ",
-        " "
-      ],
-      "format-muted": " ",
-      "max-volume": 150,
-      "on-click": "pwvucontrol",
-      "scroll-step": 1
+    "format": " {:%I:%M %p}  ",
+    "locale": "en_GB.UTF-8",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>"
+  },
+  "cpu": {
+    "format": " {usage}%  ",
+    "tooltip": true
+  },
+  "custom/iris": {
+    "exec": "~/.config/waybar/scripts/iris.sh",
+    "format": "{}%  ",
+    "interval": "10",
+    "return-type": "json",
+    "tooltip": true
+  },
+  "hyprland/language": {
+    "format": " {}  ",
+    "format-en": "US",
+    "format-ru": "RU",
+    "keyboard-name": "at-translated-set-2-keyboard"
+  },
+  "hyprland/workspaces": {
+    "persistent-workspaces": {
+      "*": 10
     }
+  },
+  "memory": {
+    "format": " {used}G  ",
+    "interval": 30,
+    "max-length": 10
+  },
+  "mpd": {
+    "consume-icons": {
+      "on": " "
+    },
+    "format": " {stateIcon} {consumeIcon}{singleIcon} {artist} - {title} ",
+    "format-disconnected": " Disconnected ",
+    "format-stopped": " {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped",
+    "interval": 10,
+    "on-click": "mpc toggle",
+    "on-click-right": "mpc next",
+    "on-scroll-down": "mpc volume -1",
+    "on-scroll-up": "mpc volume +1",
+    "port": "6600",
+    "random-icons": {
+      "off": "<span color=\"#f53c3c\"></span> ",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "server": "localhost",
+    "single-icons": {
+      "on": " 1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    "tooltip-format": "MPD {elapsedTime:%M:%S}/{totalTime:%M:%S} ({volume}%)",
+    "tooltip-format-disconnected": " MPD (disconnected)"
+  },
+  "network": {
+    "format-disconnected": " ",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "format-wifi": " {signalStrength}% {icon} ",
+    "interval": "10",
+    "tooltip-format": "{essid} {ifname} via {gwaddr}  "
+  },
+  "temperature": {
+    "critical-threshold": 80,
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "hwmon-path": "/sys/class/hwmon/hwmon0/temp1_input"
+  },
+  "tray": {
+    "icon-size": 20,
+    "spacing": 10
+  },
+  "wireplumber": {
+    "format": "{volume}% {icon}",
+    "format-icons": [
+      "",
+      " ",
+      " "
+    ],
+    "format-muted": " ",
+    "max-volume": 150,
+    "on-click": "pwvucontrol",
+    "scroll-step": 1
   }
-]
+}
