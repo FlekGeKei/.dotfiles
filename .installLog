@@ -211,6 +211,31 @@ yay -S  megasync-bin
 
 yay -S protonup-qt-bin
 
+# hamachi 
+yay -S haguichi 
+# you can also do this
+sudo systemctl enable logmein-hamachi.service
+sudo nvim /etc/systemd/system/multi-user.target.wants/logmein-hamachi.service
+# make hamachi start before nftables 
+||
+[Unit]
+Description=LogMeIn Hamachi daemon
+After=local-fs.target network.target
+Before=nftables.service
+
+[Service]
+ExecStart=/opt/logmein-hamachi/bin/hamachid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
+||
+sudo nvim /etc/nftables.conf
+# this to inet chain
+||
+iif ham0 accept comment "allow hamachi"
+||
+
 
 # add refind setings
 # secure boot in refind 
