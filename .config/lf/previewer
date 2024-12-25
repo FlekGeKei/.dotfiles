@@ -21,4 +21,7 @@ case "$(file -Lb --mime-type "$file")" in
     ;;
 esac
 
+export PISTOL_CHROMA_FORMATTER=terminal256
+export PISTOL_CHROMA_STYLE=onedark
+
 pistol "$file"
