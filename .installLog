@@ -144,7 +144,9 @@ systemctl edit --full grub-btrfsd
 systemctl enable grub-btrfsd
 timedatectl set-ntp true
 nvim /etc/pacman.conf 
-pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie libappindicator-gtk3 kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look npm pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide noise-suppression-for-voice
+pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look npm pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide noise-suppression-for-voice mpd
+
+pacman -S --asdeps libappindicator-gtk3 mpc mpd-mpris hyprland-qtutils
 
 systemctl enable libvirtd
 
@@ -196,9 +198,9 @@ sudo setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
 
 sudo pacman -S texlive
 
-systemctl --user enable syncthing.service
+systemctl --user enable syncthing.service mpd.service mpd-mpris.service
 
-yay -S ctpv coppwr pwvucontrol
+yay -S coppwr pwvucontrol pistol
 
 ysy -S qt5-styleplugins qt6gtk2
 sudo pacman -S qt6ct qt5ct
