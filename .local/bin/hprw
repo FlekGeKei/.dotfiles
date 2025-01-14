@@ -3,11 +3,11 @@
 WALLPAPER_DIR="${HOME}/Pictures/wallpapers/pc"
 
 for wallpaper in $(hyprctl hyprpaper listloaded); do
-	hyprctl hyprpaper unload "$wallpaper"
+	hyprctl hyprpaper unload "$wallpaper" > /dev/null
 done
 
 for display in $(hyprctl monitors | grep "Monitor" | cut -d " " -f 2); do
 	wallpaper="$(find "$WALLPAPER_DIR" -type f | shuf -n 1)"
-	hyprctl hyprpaper preload "$wallpaper"
-	hyprctl hyprpaper wallpaper "$display,$wallpaper"
+	hyprctl hyprpaper preload "$wallpaper" > /dev/null
+	hyprctl hyprpaper wallpaper "$display,$wallpaper" > /dev/null
 done
