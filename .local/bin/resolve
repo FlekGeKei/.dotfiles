@@ -1,3 +1,2 @@
 #!/bin/sh
-cd /opt/resolve/bin/
-QT_QPA_PLATFORM= ./resolve
+distrobox-enter -n davincibox -- bash -cl /opt/resolve/bin/resolve %u

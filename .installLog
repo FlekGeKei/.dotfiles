@@ -200,7 +200,7 @@ sudo pacman -S texlive
 
 systemctl --user enable syncthing.service mpd.service mpd-mpris.service
 
-yay -S coppwr pwvucontrol pistol
+yay -S coppwr pwvucontrol pistol ttf-ms-win11-auto
 
 ysy -S qt5-styleplugins qt6gtk2
 sudo pacman -S qt6ct qt5ct
@@ -324,3 +324,10 @@ When=PostTransaction
 Exec=/usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/share/edk2-shell/x64/Shell_Full.efi --output /efi/EFI/tools/shell.efi
 Depends=sbsigntools
 ||
+
+#davinci resolve
+sudo pacman -S distrobox podman
+git clone https://github.com/zelikos/davincibox.git 
+#download davinci resolve installer 
+./setup.sh /path/to/run/file
+distrobox-enter -n davincibox -- sudo dnf install breeze-cursor-theme
