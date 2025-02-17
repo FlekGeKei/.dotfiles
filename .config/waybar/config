@@ -28,6 +28,8 @@
   "backlight": {
     "device": "intel_backlight",
     "format": " {percent}% {icon} ",
+    "on-scroll-up": "brightnessctl s 1%+",
+    "on-scroll-down": "brightnessctl s 1%-",
     "format-icons": [
       "",
       "",
