@@ -72,7 +72,7 @@ UUID=8C41-593A      	/efi      	vfat      	rw,relatime,fmask=0022,dmask=0022,cod
 ||
 
 
-pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft 
+pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft pacman-contrib
 genfstab -U /mnt >> /mnt/etc/fstab
 # control all <options> specially for swap subvol
 cat /mnt/etc/fstab
@@ -144,7 +144,7 @@ systemctl edit --full grub-btrfsd
 systemctl enable grub-btrfsd
 timedatectl set-ntp true
 nvim /etc/pacman.conf 
-pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland uwsm gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide noise-suppression-for-voice mpd brightnessctl
+pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler mesa bc jq speedcrunch udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince texstudio keepassxc libreoffice-still firefox thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland uwsm gamemode tmux xdg-desktop-portal-hyprland polkit-kde-agent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide mpd brightnessctl
 
 pacman -S --asdeps libappindicator-gtk3 mpc mpd-mpris hyprland-qtutils
 
@@ -200,7 +200,7 @@ sudo pacman -S texlive
 
 systemctl --user enable syncthing.service mpd.service mpd-mpris.service
 
-yay -S coppwr pwvucontrol pistol ttf-ms-win11-auto
+yay -S coppwr pwvucontrol pistol ttf-ms-win11-auto noisetorch-bin
 
 ysy -S qt5-styleplugins qt6gtk2
 sudo pacman -S qt6ct qt5ct
@@ -209,6 +209,20 @@ yay -S  megasync-bin
 
 # btop and intel gpus 
 sudo setcap cap_perfmon=+ep /usr/bin/btop
+
+nvim /etc/pacman.d/hooks/btop.hook
+||
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = btop 
+
+[Action]
+Description = btop setcaping 
+When = PostTransaction
+Exec = /usr/bin/setcap cap_perfmod=+ep /usr/bin/btop
+||
 
 
 yay -S protonup-qt-bin

@@ -5,6 +5,10 @@
 ---@type ChadrcConfig
 local M = {}
 
+M.ui.tabufline = {
+  enabled = false,
+}
+
 M.base46 = {
 	theme = "onedark",
 

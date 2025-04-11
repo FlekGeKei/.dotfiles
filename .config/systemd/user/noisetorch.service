@@ -1,0 +1,13 @@
+[Unit]
+Description=NoiseTorch noise supression (for PipeWire)
+Requires=pipewire-pulse.socket
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/noisetorch -i -s alsa_input.pci-0000_00_1f.3.analog-stereo -t 95
+#ExecStart=/usr/bin/noisetorch -i
+ExecStop=/usr/bin/noisetorch -u
+
+[Install]
+WantedBy=default.target
