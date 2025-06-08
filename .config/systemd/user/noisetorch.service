@@ -1,6 +1,6 @@
 [Unit]
 Description=NoiseTorch noise supression (for PipeWire)
-Requires=pipewire-pulse.socket
+Requires=pipewire.socket
 
 [Service]
 Type=oneshot
