@@ -19,7 +19,7 @@ cmd fzf_search ${{
         --bind="start:reload([ -n {q} ] && $cmd -- {q} || true)" \
         --bind="change:reload([ -n {q} ] && $cmd -- {q} || true)" \
         --bind='enter:become(lf -remote "send $id select \"$(printf "%s" {1} | sed '\''s/\\/\\\\/g;s/"/\\"/g'\'')\"")' \
-        --preview='cat -- {1}' # Use your favorite previewer here (bat, source-highlight, etc.), for example:
+        --preview='fzf-preview -- {1}' # Use your favorite previewer here (bat, source-highlight, etc.), for example:
         #--preview-window='+{2}-/2' \
         #--preview='bat --color=always --highlight-line={2} -- {1}'
         # Alternatively you can even use the same previewer you've configured for lf

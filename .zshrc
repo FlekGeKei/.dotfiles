@@ -42,6 +42,7 @@ export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
 # aliaces
 alias ls='eza'
 alias l='eza -l -a'
+alias f='fzf --preview "fzf-preview {}"'
 
 # integrations
 eval "$(fzf --zsh)"

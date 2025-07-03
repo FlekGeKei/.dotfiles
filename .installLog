@@ -347,3 +347,7 @@ git clone https://github.com/zelikos/davincibox.git
 #download davinci resolve installer 
 ./setup.sh /path/to/run/file
 distrobox-enter -n davincibox -- sudo dnf install breeze-cursor-theme
+
+#antivirus 
+sudo pacman -Syu clamtk clamav
+## and shit form https://wiki.archlinux.org/title/ClamAV
