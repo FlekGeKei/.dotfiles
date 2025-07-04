@@ -42,6 +42,7 @@ export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
 alias ls='eza'
 alias l='eza -l -a'
 alias f='fzf --preview "fzf-preview {}"'
+alias t='~/.local/bin/tmux-auto'
 
 # integrations
 eval "$(fzf --zsh)"

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+SESSION="fap"
+
+
+if ! tmux has-session -t $SESSION 2>/dev/null; then
+  tmux new-session -d -s $SESSION -n $SESSION:ss 
+  
+  tmux new-window -n $SESSION:nvim
+  tmux send-keys "nvim" C-m
+
+  tmux select-window -t 1
+fi
+
+tmux attach-session -t $SESSION
