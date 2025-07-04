@@ -43,7 +43,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --  the definition of its *type*, not where it was *defined*.
     map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
-    -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
     ---@param client vim.lsp.Client
     ---@param method vim.lsp.protocol.Method
     ---@param bufnr? integer some lsp support methods only in specific files
@@ -157,3 +156,27 @@ require('mason-lspconfig').setup {
     end,
   },
 }
+
+vim.diagnostic.config({
+  signs = {
+    active = true,
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN]= '',
+      [vim.diagnostic.severity.HINT] = '',
+      [vim.diagnostic.severity.INFO] = '',
+    },
+  },
+  virtual_text = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = true,
+    style = "minimal",
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+})

@@ -1,5 +1,5 @@
 require("catppuccin").setup({
-    flavour = "auto", -- latte, frappe, macchiato, mocha
+    flavour = "mocha", -- latte, frappe, macchiato, mocha
     background = { -- :h background
         light = "latte",
         dark = "mocha",
@@ -43,6 +43,30 @@ require("catppuccin").setup({
             enabled = true,
             indentscope_color = "",
         },
+        blink_cmp = {
+          style = 'bordered',
+        },
+        native_lsp = {
+            enabled = true,
+            virtual_text = {
+                errors = { "italic" },
+                hints = { "italic" },
+                warnings = { "italic" },
+                information = { "italic" },
+                ok = { "italic" },
+            },
+            underlines = {
+                errors = { "underline" },
+                hints = { "underline" },
+                warnings = { "underline" },
+                information = { "underline" },
+                ok = { "underline" },
+            },
+            inlay_hints = {
+                background = true,
+            },
+        },
+        which_key = true,
         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
     },
 })
