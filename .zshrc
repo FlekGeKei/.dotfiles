@@ -18,7 +18,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 # import zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-
 # Options
 # turn on history 
 export HISTFILE="$HOME/.zsh_history"
@@ -48,37 +47,16 @@ alias f='fzf --preview "fzf-preview {}"'
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-function command_not_found_handler {
-  local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
-  printf 'zsh: command not found: %s\n' "$1"
-  local entries=(
-    ${(f)"$(/usr/bin/pacman -F --machinereadable -- "/usr/bin/$1")"}
-  )
-  if (( ${#entries[@]} ))
-  then
-    printf "${bright}$1${reset} may be found in the following packages:\n"
-    local pkg
-    for entry in "${entries[@]}"
-    do
-      # (repo package version file)
-      local fields=(
-        ${(0)entry}
-      )
-      if [[ "$pkg" != "${fields[2]}" ]]
-      then
-        printf "${purple}%s/${bright}%s ${green}%s${reset}\n" "${fields[1]}" "${fields[2]}" "${fields[3]}"
-      fi
-      printf '    /%s\n' "${fields[4]}"
-      pkg="${fields[2]}"
-    done
-  fi
-  return 127
-}
-
-
 # environment
 export EDITOR=nvim 
 
+#catppuccin
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
+--color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
+--color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
+--color=selected-bg:#45475A \
+--color=border:#313244,label:#CDD6F4"
 
 # Plugins
 

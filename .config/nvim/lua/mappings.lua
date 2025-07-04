@@ -1,32 +1,72 @@
-require "nvchad.mappings"
-
--- add yours here
-
 local map = vim.keymap.set
 
+map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
+map("i", "<C-e>", "<End>", { desc = "move end of line" })
+map("i", "<C-h>", "<Left>", { desc = "move left" })
+map("i", "<C-l>", "<Right>", { desc = "move right" })
+map("i", "<C-j>", "<Down>", { desc = "move down" })
+map("i", "<C-k>", "<Up>", { desc = "move up" })
+
+map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
+map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
+map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
+map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
+
+map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
+
+map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
+map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
+
+map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
+map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
+
+map({ "n", "x" }, "<leader>fm", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "general format file" })
+
+-- global lsp mappings
+map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
+
+-- tabufline
+map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
+
+map("n", "<tab>", function()
+  require("nvchad.tabufline").next()
+end, { desc = "buffer goto next" })
+
+map("n", "<S-tab>", function()
+  require("nvchad.tabufline").prev()
+end, { desc = "buffer goto prev" })
+
+map("n", "<leader>x", function()
+  require("nvchad.tabufline").close_buffer()
+end, { desc = "buffer close" })
+
+-- Comment
+map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
+map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
+
+-- nvimtree
+map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+
+-- telescope
+map("n", "<leader>ff", "<cmd>Telescope<CR>", { desc = "telescope pick hidden term" })
+map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
+map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
+map("n", "<leader>ma", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
+map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
+map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
+map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
+map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-
--- Nvim DAP
-map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
-map("n", "<Leader>dj", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Debugger step over" })
-map("n", "<Leader>dk", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Debugger step out" })
-map("n", "<Leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Debugger continue" })
-map("n", "<Leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Debugger toggle breakpoint" })
-map(
-	"n",
-	"<Leader>dd",
-	"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-	{ desc = "Debugger set conditional breakpoint" }
-)
-map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugger reset" })
-map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger run last" })
-
--- rustaceanvim
+-- rustceanvim
 map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables (RUST)" })
-
 map("n", "<Leader>rd", "<cmd>lua vim.cmd.RustLsp('renderDiagnostic')<CR>", { desc = "Render diagnostics (RUST)"})
 map("n", "<Leader>re", "<cmd>lua vim.cmd.RustLsp('explainError')<CR>", { desc = "Explain errors (RUST)"})
 map("n", "<Leader>rj", "<cmd>lua vim.cmd.RustLsp('relatedDiagnostics')<CR>", { desc = "Jump to related diagnostics (RUST)"})

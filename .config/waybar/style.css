@@ -1,12 +1,20 @@
+@import "mocha.css";
+
 * {
-  font-family: NotoSans NF;
+  font-family: NotoSans Nerd Font;
   font-size: 16px;
   padding-top: 0;
   padding-bottom: 0;
 }
 
 window#waybar {
-  background-color: rgba(42,46,50,1);
+  background-color: @base;
+}
+
+#workspaces button {
+    padding: 1px;
+    color: #313244;
+    margin-right: 1px;
 }
 
 window#waybar.hidden {
@@ -18,117 +26,117 @@ window#waybar.empty {
   background-color: transparent;
 }
 window#waybar.solo {
-  background-color: #FFFFFF;
+  background-color: @text;
 }
 */
 
 window#waybar.termite {
-  background-color: rgba(42,46,50,1);
+  background-color: @base;
 }
 
 #custom-iris {
-  color: #ffffff;
-  background-color: rgba(42,46,50,1);
+  color: @text;
+  background-color: @base;
 }
 
 #language {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #mpd {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #tray {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #language {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #network {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #battery {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #backlight {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #wireplumber {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #clock {
-  background-color: rgba(42,46,50,1);
-  color: #FFFFFF;
+  background-color: @base;
+  color: @text;
 }
 
 #bluetooth {
-  background-color: rgba(42,46,50,1);
-  color: #ffffff;
+  background-color: @base;
+  color: @text;
 }
 
 #workspaces {
-  background-color: rgba(42,46,50,1);
-  color: #ffffff;
+  background-color: @base;
+  color: @text;
 }
 
 #workspaces button {
-  background-color: rgba(42,46,50,1);
-  color: #ffffff;
+  background-color: @base;
+  color: @text;
 }
 
 #workspaces button.active {
   border-radius: 0px;
-  box-shadow: inset 0 3px #ffffff;
-  color: #ffffff;
-  background-color: rgba(42,46,50,1);
+  box-shadow: inset 0 3px @text;
+  color: @text;
+  background-color: @base;
 }
 
 #workspaces button.empty {
-  background-color: rgba(42,46,50,1);
+  background-color: @base;
   color: #a1a9b1;
 }
 
 #workspaces button.visible {
-  background-color: rgba(42,46,50,1);
-  color: #ffffff;
+  background-color: @base;
+  color: @text;
 }
 
 #workspaces button.special {
-  background-color: rgba(42,46,50,1);
-  color: #ff0000;
+  background-color: @base;
+  color: @red;
 }
 
 #workspaces button.urgent{
-  color: #ff0000;
-  background-color: rgba(42,46,50,1);
+  color: @red;
+  background-color: @base;
 }
 
 #cpu {
-  color: #ffffff;
-  background-color: rgba(42,46,50,1);
+  color: @text;
+  background-color: @base;
 }
 
 #memory {
-  color: #ffffff;
-  background-color: rgba(42,46,50,1);
+  color: @text;
+  background-color: @base;
 }
 
 #temperature {
-  color: #ffffff;
-  background-color: rgba(42,46,50,1);
+  color: @text;
+  background-color: @base;
 }
