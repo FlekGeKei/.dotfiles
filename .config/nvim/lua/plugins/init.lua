@@ -56,7 +56,7 @@ return {
 	{
 		"OXY2DEV/markview.nvim",
 		priority = 49,
-		dependencies = { "OXY2DEV/markview.nvim" },
+		dependencies = { "saghen/blink.cmp" },
 		opts = {
 			experimental = {
 				check_rtp = false,
@@ -90,12 +90,12 @@ return {
 			require("configs.which-key")
 		end,
 	},
-  {
-    'nvim-lualine/lualine.nvim',
-    config = function ()
-      require('configs.lualine')
-    end
-  },
+	{
+		"nvim-lualine/lualine.nvim",
+		config = function()
+			require("configs.lualine")
+		end,
+	},
 
 	{
 		"folke/lazydev.nvim",
@@ -108,8 +108,9 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPost", "BufNewFile" },
+		lazy = false,
 		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+		dependencies = { "OXY2DEV/markview.nvim" },
 		build = ":TSUpdate",
 		opts = function()
 			return require("configs.treesitter")
@@ -121,28 +122,17 @@ return {
 	{
 		"saghen/blink.cmp",
 		dependencies = {
-      {
-        'L3MON4D3/LuaSnip',
-        build = (function()
-          return 'make install_jsregexp'
-        end)(),
-        dependencies = {
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
-        },
-        opts = {},
-      },
+      "rafamadriz/friendly-snippets",
 			"folke/lazydev.nvim",
 		},
+    event = "InsertEnter",
 		version = "*",
 		opts = function()
 			require("configs.blinkcmp")
 		end,
-		opts_extend = { "sources.default" },
+		opts_extend = {
+			"sources.default",
+		},
 	},
 	{
 		"neovim/nvim-lspconfig",

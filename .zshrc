@@ -32,11 +32,13 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups 
 setopt hist_find_no_dups 
 
+export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
+export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8,fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC,marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8,selected-bg:#45475A,border:#313244,label:#CDD6F4"
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-
-export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
+zstyle ':fzf-tab:*' fzf-flags $FZF_DEFAULT_OPTS --bind=tab:accept
 
 # aliaces
 alias ls='eza'
@@ -50,14 +52,6 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # environment
 export EDITOR=nvim 
-
-#catppuccin
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
---color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
---color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
---color=selected-bg:#45475A \
---color=border:#313244,label:#CDD6F4"
 
 # Plugins
 
