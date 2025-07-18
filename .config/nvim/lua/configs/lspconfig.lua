@@ -114,18 +114,14 @@ vim.diagnostic.config({
 local lspconfig = require("lspconfig")
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local servers =
-	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "wgsl_analyzer", "lua_ls" }
-require("lspconfig.configs").wgsl_analyzer = {
-	default_config = {
-		cmd = { vim.fn.expand("$HOME") .. "~/.local/share/nvim/mason/bin/glsl_analyzer" },
-	},
-}
+	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls" }
 
 for _, Isp in ipairs(servers) do
 	lspconfig[Isp].setup({
 		capabilities = capabilities,
 	})
 end
+
 
 local ensure_installed = vim.tbl_values(servers)
 vim.list_extend(ensure_installed, {
