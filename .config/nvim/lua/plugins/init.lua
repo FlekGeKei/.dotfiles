@@ -64,6 +64,17 @@ return {
 		},
 	},
 	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		---@type snacks.Config
+		opts = {
+			image = {
+        img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments", "_attach" },
+			},
+		},
+	},
+	{
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
 		dependencies = {
@@ -122,10 +133,10 @@ return {
 	{
 		"saghen/blink.cmp",
 		dependencies = {
-      "rafamadriz/friendly-snippets",
+			"rafamadriz/friendly-snippets",
 			"folke/lazydev.nvim",
 		},
-    event = "InsertEnter",
+		event = "InsertEnter",
 		version = "*",
 		opts = function()
 			require("configs.blinkcmp")
