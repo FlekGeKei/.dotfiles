@@ -56,7 +56,10 @@ return {
 	{
 		"OXY2DEV/markview.nvim",
 		priority = 49,
-		dependencies = { "saghen/blink.cmp" },
+		dependencies = {
+			"saghen/blink.cmp",
+			"ribru17/blink-cmp-spell",
+		},
 		opts = {
 			experimental = {
 				check_rtp = false,
@@ -67,12 +70,9 @@ return {
 		"folke/snacks.nvim",
 		priority = 1000,
 		lazy = false,
-		---@type snacks.Config
-		opts = {
-			image = {
-        img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments", "_attach" },
-			},
-		},
+		opts = function()
+			return require("configs.snacks")
+		end,
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -98,7 +98,7 @@ return {
 		"folke/which-key.nvim",
 		event = "VimEnter",
 		opts = function()
-			require("configs.which-key")
+			return require("configs.which-key")
 		end,
 	},
 	{
@@ -139,7 +139,7 @@ return {
 		event = "InsertEnter",
 		version = "*",
 		opts = function()
-			require("configs.blinkcmp")
+			return require("configs.blinkcmp")
 		end,
 		opts_extend = {
 			"sources.default",

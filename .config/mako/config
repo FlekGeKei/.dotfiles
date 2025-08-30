@@ -1,5 +1,6 @@
 max-visible=5
 sort=-time
+on-notify=exec mpv /usr/share/sounds/freedesktop/stereo/message-new-instant.oga
 
 layer=overlay
 anchor=top-right

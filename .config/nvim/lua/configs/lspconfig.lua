@@ -43,6 +43,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--  the definition of its *type*, not where it was *defined*.
 		map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
+    map("dr", "<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>", "[D]iagnostic [r]ender" )
+
 		---@param client vim.lsp.Client
 		---@param method vim.lsp.protocol.Method
 		---@param bufnr? integer some lsp support methods only in specific files
@@ -114,7 +116,7 @@ vim.diagnostic.config({
 local lspconfig = require("lspconfig")
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local servers =
-	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls" }
+	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls", "pylsp" }
 
 for _, Isp in ipairs(servers) do
 	lspconfig[Isp].setup({

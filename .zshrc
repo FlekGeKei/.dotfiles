@@ -35,6 +35,13 @@ setopt hist_find_no_dups
 export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
 export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8,fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC,marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8,selected-bg:#45475A,border:#313244,label:#CDD6F4"
 
+# vulkan-sdk
+#export VULKAN_SDK=~/.local/sdk/vulkan-sdk/1.4.321.1/x86_64
+#export PATH=$VULKAN_SDK/bin:$PATH
+#export LD_LIBRARY_PATH=$VULKAN_SDK/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+#export VK_ADD_LAYER_PATH=$VULKAN_SDK/share/vulkan/explicit_layer.d
+#export VK_LAYER_PATH=$VULKAN_SDK/share/vulkan/explicit_layer.d
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
