@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--  the definition of its *type*, not where it was *defined*.
 		map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
-    map("dr", "<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>", "[D]iagnostic [r]ender" )
+		map("dr", "<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>", "[D]iagnostic [r]ender")
 
 		---@param client vim.lsp.Client
 		---@param method vim.lsp.protocol.Method
@@ -113,21 +113,22 @@ vim.diagnostic.config({
 	},
 })
 
-local lspconfig = require("lspconfig")
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local servers =
 	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls", "pylsp" }
 
-for _, Isp in ipairs(servers) do
-	lspconfig[Isp].setup({
-		capabilities = capabilities,
-	})
-end
+vim.lsp.config("*", {
+	capabilities = capabilities,
+})
 
+for _, server in ipairs(servers) do
+	vim.lsp.enable(server)
+end
 
 local ensure_installed = vim.tbl_values(servers)
 vim.list_extend(ensure_installed, {
 	"stylua",
+	"mdformat",
 })
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -141,7 +142,7 @@ require("mason-lspconfig").setup({
 			-- by the server configuration above. Useful when disabling
 			-- certain features of an LSP (for example, turning off formatting for ts_ls)
 			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-			require("lspconfig")[server_name].setup(server)
+			vim.lsp.config[server_name].setup(server)
 		end,
 	},
 })
