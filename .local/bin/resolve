@@ -1,2 +1,2 @@
 #!/bin/sh
-distrobox-enter -n davincibox -- bash -cl /opt/resolve/bin/resolve %u
+distrobox-enter -n davincibox -- bash -cl "QT_QPA_PLATFORM=xcb /opt/resolve/bin/resolve"

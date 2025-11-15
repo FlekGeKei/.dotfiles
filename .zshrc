@@ -51,7 +51,7 @@ zstyle ':fzf-tab:*' fzf-flags $FZF_DEFAULT_OPTS --bind=tab:accept
 alias ls='eza'
 alias l='eza -l -a'
 alias f='fzf --preview "fzf-preview {}"'
-alias t='~/.local/bin/tmux-auto'
+alias t='tmux new-session -s fap'
 
 # integrations
 eval "$(fzf --zsh)"

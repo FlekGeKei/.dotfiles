@@ -60,11 +60,9 @@ return {
 			"saghen/blink.cmp",
 			"ribru17/blink-cmp-spell",
 		},
-		opts = {
-			experimental = {
-				check_rtp = false,
-			},
-		},
+		opts = function ()
+		  return require("configs.markview")
+		end,
 	},
 	{
 		"folke/snacks.nvim",
