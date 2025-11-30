@@ -9,6 +9,8 @@ function ReplaceWords()
 		{ "\\.\\.\\.", "…" },
 		{ "---", "—" },
 		{ "--", "–" },
+    { "!!", "‼" },
+    { "?!", "⁈" },
 	}
 
 	for _, value in ipairs(rpt) do
