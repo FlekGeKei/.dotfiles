@@ -1,7 +1,7 @@
 return {
 	---@class snacks.image.Config
 	image = {
-		img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments", "_attach" },
+		img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments" },
 		formats = {
 			"png",
 			"jpg",
@@ -18,6 +18,7 @@ return {
 			"mkv",
 			"webm",
 			"pdf",
+      "jxl",
 		},
 		force = false, -- try displaying the image, even if the terminal does not support it
 		doc = {

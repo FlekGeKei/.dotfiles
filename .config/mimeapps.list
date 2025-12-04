@@ -22,6 +22,7 @@ image/svg=imv.desktop
 image/tiff=imv.desktop
 image/gif=imv.desktop
 image/heif=imv.desktop
+image/jxl=imv.desktop
 x-scheme-handler/ror2mm=r2modman.desktop
 x-scheme-handler/feed=userapp-Thunderbird-NMF812.desktop
 application/rss+xml=userapp-Thunderbird-NMF812.desktop

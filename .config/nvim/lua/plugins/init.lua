@@ -56,13 +56,49 @@ return {
 	{
 		"OXY2DEV/markview.nvim",
 		priority = 49,
+		lazy = true,
 		dependencies = {
 			"saghen/blink.cmp",
 			"ribru17/blink-cmp-spell",
 		},
-		opts = function ()
-		  return require("configs.markview")
+		opts = function()
+			return require("configs.markview")
 		end,
+	},
+	{
+		"jakewvincent/mkdnflow.nvim",
+		lazy = true,
+		dependencies = {
+			"Saghen/blink.cmp",
+			"Saghen/blink.compat",
+		},
+		config = function()
+			require("configs.mkdnflow")
+		end,
+	},
+	{
+		"HakonHarnes/img-clip.nvim",
+		event = "VeryLazy",
+		opts = function()
+			return require("configs.img-clip")
+		end,
+		keys = {
+			{ "<leader>ip", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+			{
+				"<leader>pi",
+				function()
+					Snacks.picker.files({
+						ft = { "jpg", "jpeg", "png", "webp", "gif", "jxl" },
+						confirm = function(self, item, _)
+							self:close()
+							--require("img-clip").paste_image({ file_name = "%Y-%m-%d-%H-%M-%S.jxl" }, "./" .. item.file) -- ./ is necessary for img-clip to recognize it as path
+							require("img-clip").paste_image({ file_name = "%Y-%m-%d-%H-%M-%S.png" }, "./" .. item.file) -- ./ is necessary for img-clip to recognize it as path
+						end,
+					})
+				end,
+				desc = "[P]ick [I]mage",
+			},
+		},
 	},
 	{
 		"folke/snacks.nvim",
@@ -129,10 +165,21 @@ return {
 		end,
 	},
 	{
+		"nvim-treesitter/nvim-treesitter-context",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+		},
+		opts = {
+			max_lines = 3,
+			multiline_threshold = 1,
+		},
+	},
+	{
 		"saghen/blink.cmp",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
 			"folke/lazydev.nvim",
+			"saghen/blink.compat",
 		},
 		event = "InsertEnter",
 		version = "*",
@@ -142,6 +189,15 @@ return {
 		opts_extend = {
 			"sources.default",
 		},
+	},
+	{
+		"saghen/blink.compat",
+		-- use v2.* for blink.cmp v1.*
+		version = "2.*",
+		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+		lazy = true,
+		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
+		opts = {},
 	},
 	{
 		"neovim/nvim-lspconfig",

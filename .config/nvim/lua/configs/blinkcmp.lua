@@ -61,9 +61,15 @@ return {
 					end,
 				},
 			},
+			mkdnflow = {
+				name = "mkdnflow",
+				module = "blink.compat.source",
+        score_offset = -3,
+			},
 		},
 		per_filetype = {
 			lua = { inherit_defaults = true },
+			markdown = { inherit_defaults = true, "mkdnflow" },
 		},
 	},
 
