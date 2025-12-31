@@ -18,6 +18,8 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 # import zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+source ~/.env
+
 # Options
 # turn on history 
 export HISTFILE="$HOME/.zsh_history"

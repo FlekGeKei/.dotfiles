@@ -48,7 +48,12 @@ return {
 	{
 		"mrcjkb/rustaceanvim",
 		version = "^5",
-		lazy = false,
+		ft = "rust",
+	},
+	{
+		"mfussenegger/nvim-jdtls",
+		lazy = true,
+		ft = "java",
 	},
 	{
 		"folke/neoconf.nvim",
@@ -68,6 +73,7 @@ return {
 	{
 		"jakewvincent/mkdnflow.nvim",
 		lazy = true,
+		ft = "markdown",
 		dependencies = {
 			"Saghen/blink.cmp",
 			"Saghen/blink.compat",
@@ -160,7 +166,7 @@ return {
 		opts = function()
 			return require("configs.treesitter")
 		end,
-		config = function(_, opts)
+		config = function(opts)
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},
@@ -173,6 +179,15 @@ return {
 			max_lines = 3,
 			multiline_threshold = 1,
 		},
+	},
+	{
+		"mfussenegger/nvim-lint",
+		opts = function()
+			return require("configs.lint.opts")
+		end,
+		config = function(_, opts)
+			require("configs.lint").setup(opts)
+		end,
 	},
 	{
 		"saghen/blink.cmp",

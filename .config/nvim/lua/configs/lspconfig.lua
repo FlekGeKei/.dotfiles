@@ -113,6 +113,19 @@ vim.diagnostic.config({
 	},
 })
 
+vim.filetype.add({
+	filename = {
+		["vifmrc"] = "vim",
+	},
+	pattern = {
+		[".*/waybar/config"] = "jsonc",
+		[".*/kitty/.+%.conf"] = "kitty",
+		[".*/hypr/.+%.conf"] = "hyprlang",
+		["%.env%.[%w_.-]+"] = "sh",
+	},
+})
+vim.treesitter.language.register("bash", "kitty")
+
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local servers =
 	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls", "pylsp" }
@@ -125,10 +138,42 @@ for _, server in ipairs(servers) do
 	vim.lsp.enable(server)
 end
 
+vim.lsp.config("jdtls", {
+	settings = {
+		java = {
+			configuration = {
+				runtimes = {
+					{
+						name = "JavaSE-1.8",
+						path = "/usr/lib/jvm/java-8-temurin/",
+					},
+					{
+						name = "JavaSE-11",
+						path = "/usr/lib/jvm/java-11-temurin/",
+					},
+					{
+						name = "JavaSE-17",
+						path = "/usr/lib/jvm/java-17-temurin/",
+					},
+					{
+						name = "JavaSE-21",
+						path = "/usr/lib/jvm/java-21-temurin/",
+					},
+					{
+						name = "JavaSE-25",
+						path = "/usr/lib/jvm/java-25-temurin/",
+					},
+				},
+			},
+		},
+	},
+})
+
 local ensure_installed = vim.tbl_values(servers)
 vim.list_extend(ensure_installed, {
 	"stylua",
-	"mdformat",
+	"markdownlint-cli2",
+	"markdown-toc",
 })
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

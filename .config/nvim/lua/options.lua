@@ -8,7 +8,7 @@ o.cursorlineopt = 'both'
 o.relativenumber = true
 o.number = true
 
-o.expandtab = true
+o.expandtab = false
 o.shiftwidth = 2
 o.smartindent = true
 o.tabstop = 2
@@ -23,3 +23,5 @@ o.undofile = true
 o.spell = true
 o.spelllang = "en_us"
 o.spelloptions = "noplainbuffer"
+
+vim.uv.os_setenv("JAVA_HOME",  "/usr/lib/jvm/java-21-temurin/")
