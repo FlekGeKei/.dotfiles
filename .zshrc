@@ -54,6 +54,7 @@ alias ls='eza'
 alias l='eza -l -a'
 alias f='fzf --preview "fzf-preview {}"'
 alias t='tmux new-session -s fap'
+alias y='yazi'
 
 # integrations
 eval "$(fzf --zsh)"
