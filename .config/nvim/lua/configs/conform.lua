@@ -22,12 +22,15 @@ require("conform").setup({
 	},
 	formatters_by_ft = {
 		lua = { "stylua" },
-		-- Conform will run multiple formatters sequentially
 		python = { "isort", "black" },
-		-- Conform will run the first available formatter
-		javascript = { "prettierd", "prettier", stop_after_first = true },
+		javascript = { "prettier", stop_after_first = true },
 		rust = { "rustfmt" },
 		markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
 		["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
+		ocaml = { "ocamlformat" },
+		scala = { "scalafmt" },
+		bash = { "beautysh" },
+		sh = { "beautysh" },
+		zsh = { "beautysh" },
 	},
 })

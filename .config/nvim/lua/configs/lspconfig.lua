@@ -127,8 +127,18 @@ vim.filetype.add({
 vim.treesitter.language.register("bash", "kitty")
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
-local servers =
-	{ "zls", "html", "lemminx", "cssls", "bashls", "texlab", "marksman", "glsl_analyzer", "lua_ls", "pylsp" }
+local servers = {
+	"zls",
+	"html",
+	"lemminx",
+	"cssls",
+	"bashls",
+	"texlab",
+	"marksman",
+	"glsl_analyzer",
+	"lua_ls",
+	"pylsp",
+}
 
 vim.lsp.config("*", {
 	capabilities = capabilities,

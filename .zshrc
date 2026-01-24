@@ -1,12 +1,12 @@
 if [[ -z $TMUX ]] && uwsm check may-start && uwsm select; then
-	exec systemd-cat -t uwsm_start uwsm start default
+    exec systemd-cat -t uwsm_start uwsm start default
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 
@@ -21,7 +21,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 source ~/.env
 
 # Options
-# turn on history 
+# turn on history
 export HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
@@ -31,8 +31,8 @@ setopt appendhistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
-setopt hist_ignore_dups 
-setopt hist_find_no_dups 
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
 export PATH=${PATH}:${HOME}/.local/bin:${HOME}/.cargo/bin
 export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8,fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC,marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8,selected-bg:#45475A,border:#313244,label:#CDD6F4"
@@ -60,7 +60,10 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 # environment
-export EDITOR=nvim 
+export EDITOR=nvim
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
+export SSH_AGENT_PID=""
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
 
 # Plugins
 
@@ -76,15 +79,21 @@ zinit light Aloxaf/fzf-tab
 # from OMZ
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
-zinit snippet OMZP::man 
+zinit snippet OMZP::man
 zinit snippet OMZP::extract
 zinit snippet OMZP::archlinux
 
-# load completions 
+# load completions
 autoload -U compinit && compinit
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH=$PATH:/home/flekgekei/.millennium/ext/bin
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r "${HOME}/.opam/opam-init/init.zsh" ]] || source "${HOME}/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
+# END opam configuration

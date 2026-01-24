@@ -4,12 +4,12 @@ return {
     check_rtp = false,
   },
   latex = {
-    enable = false,
+    enable = true,
     blocks = {
-        enable = false,
+        enable = true,
     },
     inlines = {
-      enable = false,
+      enable = true,
     },
   }
 }
