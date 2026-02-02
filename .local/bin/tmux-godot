@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+SESSION_NAME="godot"
+PPATH="${HOME}/Projects/Godot"
+
+if ! tmux has-session -t=$SESSION_NAME 2> /dev/null; then
+    tmux new-session -ds $SESSION_NAME -c $PPATH
+    tmux send-keys -t $SESSION_NAME "nvim --listen 127.0.0.1:55432 ." C-m
+
+    if [[ -z $TMUX ]]; then
+        tmux attach-session -t $SESSION_NAME
+        exit 0
+    fi
+fi
+
+if [[ -z $TMUX ]]; then
+    tmux attach-session -t $SESSION_NAME
+    exit 0
+fi
+
+tmux switch-client -t $SESSION_NAME

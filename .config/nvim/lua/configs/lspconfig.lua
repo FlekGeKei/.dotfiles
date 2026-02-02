@@ -147,6 +147,7 @@ vim.lsp.config("*", {
 for _, server in ipairs(servers) do
 	vim.lsp.enable(server)
 end
+vim.lsp.enable("gdscript")
 
 vim.lsp.config("jdtls", {
 	settings = {

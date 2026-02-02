@@ -205,9 +205,6 @@ systemctl --user enable syncthing.service mpd.service mpd-mpris.service
 
 yay -S coppwr pwvucontrol ttf-ms-win11-auto noisetorch-bin
 
-ysy -S qt5-styleplugins qt6gtk2
-sudo pacman -S qt6ct qt5ct
-
 yay -S  megasync-bin
 
 # btop and intel gpus 
@@ -346,7 +343,10 @@ sudo pacman -Syu clamtk clamav
 ## and shit form https://wiki.archlinux.org/title/ClamAV
 
 ##theme 
-yay -S darkly-bin catppuccin-gtk-theme-mocha
+yay -S darkly-bin catppuccin-gtk-theme-mocha qt6ct-kde rose-pine-hyprcursor
+###
+install https://github.com/catppuccin/kde
+
 #refind 
 cd /efi/EFI/refind/themes/
 git clone https://github.com/catppuccin/refind.git catppuccin

@@ -3,7 +3,9 @@ return {
 	events = { "BufWritePost", "BufReadPost", "InsertLeave" },
 	linters_by_ft = {
 		fish = { "fish" },
-    zig = { "zlint" },
+		zig = { "zlint" },
+		glsl = { "glslc" },
+		gdscript = { "gdlint" },
 		-- Use the "*" filetype to run linters on all filetypes.
 		-- ['*'] = { 'global linter' },
 		-- Use the "_" filetype to run linters on filetypes that don't have other linters configured.

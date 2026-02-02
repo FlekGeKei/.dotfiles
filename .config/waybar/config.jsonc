@@ -15,7 +15,7 @@
     "network",
     "bluetooth",
     "cpu",
-    "custom/iris",
+    //"custom/iris",
     "memory",
     "battery",
     "battery#bat2",
@@ -66,7 +66,7 @@
   },
   "bluetooth": {
     "on-click": "blueman-manager",
-    "format-connected": " {device_alias} ",
+    "format-connected": " ",
     "format-connected-battery": " {device_battery_percentage}% ",
     "format-device-preference": [
       "device1",
