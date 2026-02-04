@@ -5,9 +5,13 @@ show_hidden = true
 browser = [
 	{ run = "waterfox %s", orphan = true, for = "unix", desc = "Open with browser" }
 ]
+edit = [
+	{ run = "nvim %*", block = true, for = "unix", desc = "Edit" }
+]
 
 [open]
 rules = [
 	{ url = "*flamegraph.svg", use = [ "browser", "open" ] },
-	{ mime = "image/jxl", use = [ "open" ] }
+	{ mime = "image/jxl", use = [ "open" ] },
+	{ mime = "text/plain", use = [ "edit" ] }
 ]
