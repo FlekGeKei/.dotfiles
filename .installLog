@@ -172,6 +172,9 @@ mount -o noatime,compress=zstd,subvolume=@.snapshots /dev/nvme0n1p2 /.snapshots
 nvim /etc/snapper/configs/root
 # look at achwiki
 
+# nushell
+pacman -S nushell
+yay -S carapace-bin
 
 # put '!' behind debug flag in makepkg.cfg like hire:
 # OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug !lto)
@@ -187,7 +190,7 @@ rm -fr yay
 # for timeshift on wayland 
 pacman -S xorg-xhost 
 
-useradd -mG wheel,libvirt flekgekei -s /bin/zsh
+useradd -mG wheel,libvirt flekgekei -s /bin/nu
 passwd flekgekei
 
 # for laptops 
@@ -344,8 +347,7 @@ sudo pacman -Syu clamtk clamav
 
 ##theme 
 yay -S darkly-bin catppuccin-gtk-theme-mocha qt6ct-kde rose-pine-hyprcursor
-###
-install https://github.com/catppuccin/kde
+yay -Sdd catppuccin-plasma-colorscheme-mocha
 
 #refind 
 cd /efi/EFI/refind/themes/
