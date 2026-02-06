@@ -33,7 +33,7 @@ window#waybar.termite {
   background-color: @base;
 }
 
-#custom-iris {
+#custom-igt {
   color: @text;
   background-color: @base;
 }

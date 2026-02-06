@@ -200,7 +200,6 @@ echo 1 > /sys/devices/platform/asus-nb-wmi/hwmon/hwmon[[:print:]]*/device/thrott
 
 ### for my dotfiles
 
-sudo setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
 
 sudo pacman -S texlive
 
@@ -225,6 +224,23 @@ Target = btop
 Description = btop setcaping 
 When = PostTransaction
 Exec = /usr/bin/setcap cap_perfmon=+ep /usr/bin/btop
+||
+
+# waybar and intel_gpu_top
+sudo setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+
+nvim /etc/pacman.d/hooks/igt.hook
+||
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = intel-gpu-tools
+
+[Action]
+Description = btop setcaping 
+When = PostTransaction
+Exec = /usr/bin/setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
 ||
 
 

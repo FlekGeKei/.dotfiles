@@ -13,7 +13,7 @@ alias y = yazi
 alias t = tmux new-session -s fag
 alias f = fzf --preview "fzf-preview {}"
 
-source ($nu.default-config-dir)/themes/catppuccin_mocha.nu
+source ($nu.default-config-dir)/modules/catppuccin_mocha.nu
 source ($nu.default-config-dir)/modules/prompt.nu
 source ($nu.cache-dir)/zoxide.nu
 
@@ -28,31 +28,26 @@ let carapace_completer = {|spans: list<string>|
 
 $env.config = {
 	show_banner: false
-
 	edit_mode: vi
-
 	use_kitty_protocol: ( $env.KITTY_PID? | is-not-empty )
-
 	error_style: fancy
+	float_precision: 5
 
 	ls: {
 		use_ls_colors: true
 	}
-
 	rm: {
 		always_trash: false
 	}
-
 	table: {
 		mode: light
+		index_mode: auto
 		padding: { left: 0, right: 0 }
 	}
-
 	history: {
 		max_size: 100_000
 		file_format: sqlite
 	}
-
 	completions: {
 		algorithm: fuzzy
 		external: {

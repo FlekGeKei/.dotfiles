@@ -31,7 +31,7 @@ export-env {
 	$env.TRANSIENT_PROMPT_INDICATOR_VI_NORMAL = ""
 	$env.TRANSIENT_PROMPT_MULTILINE_INDICATOR = ""
 	$env.TRANSIENT_PROMPT_COMMAND_RIGHT = {|| 
-		history | last 1 | get duration | into string
+		(history | last 1 | get duration).0
 	}
 }
 
@@ -60,31 +60,31 @@ def git_stat_ints [ansi: string, prefix: string, int: int] {
 def git_stat [] {
 	let gitstat = gstat
 
-	if ( ($gitstat | get idx_added_staged) > -1 ) {
-		let branch = $"(ansi green)($gitstat | get branch)"
+	let added_staged = $gitstat | get idx_added_staged
 
-		let state = do {
-			let state = $gitstat | get state
-
-			if $state == "clean" {
-				return ""
-			}
-
-			$" (ansi yellow_bold)($state)"
-		}
-
-		let added_staged = $gitstat | get idx_added_staged
-
-		let idx_added_staged = git_stat_ints (ansi green) "" $added_staged
-		let idx_modified_staged = git_stat_ints (ansi green) "+" (($gitstat | get idx_modified_staged) + $added_staged)
-		let idx_deleted_staged = git_stat_ints (ansi green) "-" ($gitstat | get idx_deleted_staged)
-		let wt_untracked = git_stat_ints (ansi yellow) "?" ($gitstat | get wt_untracked)
-		let wt_modified = git_stat_ints (ansi yellow) "!" ($gitstat | get wt_modified) 
-		let wt_deleted = git_stat_ints (ansi yellow) "-" ($gitstat | get wt_deleted)
-		let ahead = git_stat_ints (ansi blue) "?" ($gitstat | get ahead)
-		
-		return $" ($branch)($state)($idx_added_staged)($idx_modified_staged)($idx_deleted_staged)($wt_untracked)($wt_modified)($wt_deleted)($ahead)"
+	if ($added_staged == -1) {
+		return ""
 	}
 
-	return ""
+	let branch = $"(ansi green)($gitstat | get branch)"
+
+	let state = do {
+		let state = $gitstat | get state
+
+		if $state == "clean" {
+			return ""
+		}
+
+		$" (ansi yellow_bold)($state)"
+	}
+
+	let idx_added_staged = git_stat_ints (ansi green) "" $added_staged
+	let idx_modified_staged = git_stat_ints (ansi green) "+" (($gitstat | get idx_modified_staged) + $added_staged)
+	let idx_deleted_staged = git_stat_ints (ansi green) "-" ($gitstat | get idx_deleted_staged)
+	let wt_untracked = git_stat_ints (ansi yellow) "?" ($gitstat | get wt_untracked)
+	let wt_modified = git_stat_ints (ansi yellow) "!" ($gitstat | get wt_modified) 
+	let wt_deleted = git_stat_ints (ansi yellow) "-" ($gitstat | get wt_deleted)
+	let ahead = git_stat_ints (ansi blue) "?" ($gitstat | get ahead)
+	
+	return $" ($branch)($state)($idx_added_staged)($idx_modified_staged)($idx_deleted_staged)($wt_untracked)($wt_modified)($wt_deleted)($ahead)"
 }

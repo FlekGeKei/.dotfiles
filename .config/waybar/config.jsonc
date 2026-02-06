@@ -15,7 +15,7 @@
     "network",
     "bluetooth",
     "cpu",
-    //"custom/iris",
+    "custom/igt",
     "memory",
     "battery",
     "battery#bat2",
@@ -109,12 +109,13 @@
     "format": " {usage}%  ",
     "tooltip": true
   },
-  "custom/iris": {
-    "exec": "~/.config/waybar/scripts/iris.sh",
+  "custom/igt": {
+    "exec": "~/.config/waybar/scripts/igt.nu",
     "format": "{}%  ",
-    "interval": "10",
+		"signal": 1,
+		"restart-interval": 10,
     "return-type": "json",
-    "tooltip": true
+    "tooltip": true,
   },
   "hyprland/language": {
     "format": " {}  ",
