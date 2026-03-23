@@ -25,7 +25,6 @@ umount /mnt
 mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 mkdir -p /mnt/home
 mkdir -p /mnt/.swap
-mkdir -p /mnt/.snapshots
 mkdir -p /mnt/srv
 mkdir -p /mnt/var/log
 mkdir -p /mnt/var/cache
@@ -36,8 +35,8 @@ mount -o noatime,compress=zstd,subvol=@.snapshots /dev/nvme0n1p2 /mnt/.snapshots
 mount -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
 mount -o noatime,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
 mount -o noatime,compress=zstd,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cache
-mount /dev/nvme0n1p1 /mnt/efi
-btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
+mount /dev/nvme0n1p1 /mnt/boot
+btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
 genfstab -U /mnt >> /mnt/etc/fstab
 vim /mnt/etc/fstab 
@@ -65,7 +64,7 @@ UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/log  	btrfs     	rw,noatime,compr
 UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/cache	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=262,subvol=/@var_cache	0 0
 
 # /dev/nvme0n1p1
-UUID=8C41-593A      	/efi      	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+UUID=8C41-593A      	/boot      	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
 
 # /.swap/swapfile
 /.swap/swapfile		none		swap		defaults	0 0
@@ -93,40 +92,62 @@ nvim /etc/hosts
 mkinitcpio -P
 
 
-# you can choose refind or grub
-# gurb
-pacman -S grub grub-btrfs inotify-tools
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
+# installing Limine
+pacman -S limine
 
-# refind
-pacman -S refind
-refind-install --alldrivers
-nvim /efi/EFI/refind/refind.conf
-# finde arch linux and change it to look like this
-# if you use amd cpu then change intel-ucode.img to amd-ucode.img
+mkdir /boot/EFI/limine
+cp /usr/share/limine/BOOTX64.EFI /boot/EFI/limine
+efibootmgr \
+      --create \
+      --disk /dev/nvme0nX \
+      -p Y \
+      --label "Arch Linux Limine Boot Loader" \
+      --loader '\EFI\limine\BOOTX64.EFI' \
+      --unicode
+nvim /boot/EFI/limine/limine.conf
 ||
-menuentry "Arch Linux" {
-    icon     /EFI/refind/icons/os_arch.png
-    volume   "Arch Linux"
-    loader   /@/boot/vmlinuz-linux
-    initrd   /@/boot/initramfs-linux.img
-    options  "root=PARTUUID=5028fa50-0079-4c40-b240-abfaf28693ea rw add_efi_memmap rootflags=subvol=@ initrd=@\boot\intel-ucode.img"
-    submenuentry "Boot using fallback initramfs" {
-        initrd /boot/initramfs-linux-fallback.img
-    }
-    submenuentry "Boot to terminal" {
-        add_options "systemd.unit=multi-user.target"
-    }
-    disabled
-}
+timeout: 5
+remember_last_entry: yes
+
+term_palette: 1e1e2e;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4
+term_palette_bright: 585b70;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4
+term_background: 321e1e2e
+term_foreground: cdd6f4
+term_background_bright: 585b70
+term_foreground_bright: cdd6f4
+
+wallpaper: boot():/limine/wallpaper.png
+wallpaper_style: centered
+backdrop: 1e1e2e
+
+${PUUID}=d2d48794-027d-4661-96df-b61ecee6c6b7
+${LTHEME}=vt.default_red=30,243,166,249,137,245,148,186,88,243,166,249,137,245,148,166 vt.default_grn=30,139,227,226,180,194,226,194,91,139,227,226,180,194,226,173 vt.default_blu=46,168,161,175,250,231,213,222,112,168,161,175,250,231,213,200
+
+/+Arch Linux
+//linux
+    protocol: linux
+    path: boot():/vmlinuz-linux
+    cmdline: root=PARTUUID=${PUUID} rootflags=subvol=@ rw rootfstype=btrfs ${LTHEME}
+    module_path: boot():/initramfs-linux.img
+//linux-lts
+    protocol: linux
+    path: boot():/vmlinuz-linux-lts
+    cmdline: root=PARTUUID=${PUUID} rootflags=subvol=@ rw rootfstype=btrfs ${LTHEME}
+    module_path: boot():/initramfs-linux-lts.img
 ||
-nvim /boot/refind_linux.conf
-# and fix 
+
+nvim /etc/pacman.d/hooks/99-limine.hook
 ||
-"Boot with standard options"  "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@"
-"Boot to single-user mode"    "root=/dev/nvme0n1p2 rw add_efi_memmap rootflags=subvol=@ single"
-"Boot with minimal options"   "ro root=/dev/nvme0n1p2"
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = limine              
+
+[Action]
+Description = Deploying Limine after upgrade...
+When = PostTransaction
+Exec = /usr/bin/cp /usr/share/limine/BOOTX64.EFI /boot/EFI/limine/
 ||
 
 
@@ -271,85 +292,6 @@ sudo nvim /etc/nftables.conf
 iif ham0 accept comment "allow hamachi"
 ||
 
-
-# add refind setings
-# secure boot in refind 
-yay -S shim-signed
-sudo pacman -S sbsigntools 
-su 
-refind-install --alldrivers --shim /usr/share/shim-signed/shimx64.efi --localkeys --yes
-sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt --output /boot/vmlinuz-linux /boot/vmlinuz-linux
-# https://www.rodsbooks.com/refind/secureboot.html
-# automate kernel signing 
-nvim /etc/initcpio/post/kernel-sbsign
-|| https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Signing_the_kernel_with_a_mkinitcpio_post_hook
-#!/usr/bin/env bash
-
-kernel="$1"
-[[ -n "$kernel" ]] || exit 0
-
-# use already installed kernel if it exists
-[[ ! -f "$KERNELDESTINATION" ]] || kernel="$KERNELDESTINATION"
-
-keypairs=(/etc/refind.d/keys/refind_local.key /etc/refind.d/keys/refind_local.crt)
-
-for (( i=0; i<${#keypairs[@]}; i+=2 )); do
-    key="${keypairs[$i]}" cert="${keypairs[(( i + 1 ))]}"
-    if ! sbverify --cert "$cert" "$kernel" &>/dev/null; then
-        sbsign --key "$key" --cert "$cert" --output "$kernel" "$kernel"
-    fi
-done
-||
-chmod +x /etc/initcpio/post/kernel-sbsign
-# automate refind updating
-nvim /etc/pacman.d/hooks/refind.hook
-|| https://wiki.archlinux.org/title/REFInd#Pacman_hook
-[Trigger]
-Operation=Upgrade
-Type=Package
-Target=refind
-
-[Action]
-Description = Updating rEFInd on ESP
-When=PostTransaction
-Exec=/usr/bin/refind-install --alldrivers --shim /usr/share/shim-signed/shimx64.efi --localkeys --yes
-||
-
-# install utilities with pacman hooks
-# if you don't use secureboot just replace all sbsign commands by cp commands (see arch wiki)
-# memtest86+
-sudo pacman -S memtest86+-efi
-sudo sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /boot/memtest86+/memtest.efi --output /efi/EFI/tools/memtest86.efi
-nvim /etc/pacman.d/hooks/memtest86+.hook
-||
-[Trigger]
-Operation=Upgrade
-Type=Package
-Target=memtest86+-efi
-
-[Action]
-Description = Updating memtest86+ on ESP
-When=PostTransaction
-Exec=/usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /boot/memtest86+/memtest.efi --output /efi/EFI/tools/memtest86.efi
-Depends=sbsigntools
-||
-# UEFI shell
-sudo pacman -S edk2-shell
-sudo sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/share/edk2-shell/x64/Shell_Full.efi --output /efi/EFI/tools/shell.efi
-nvim /etc/pacman.d/hooks/edk2-shell.hook
-||
-[Trigger]
-Operation=Upgrade
-Type=Package
-Target=edk2-shell
-
-[Action]
-Description = Updating edk2-shell on ESP
-When=PostTransaction
-Exec=/usr/bin/sbsign --key /etc/refind.d/keys/refind_local.key --cert /etc/refind.d/keys/refind_local.crt /usr/share/edk2-shell/x64/Shell_Full.efi --output /efi/EFI/tools/shell.efi
-Depends=sbsigntools
-||
-
 #davinci resolve
 sudo pacman -S distrobox podman
 git clone https://github.com/zelikos/davincibox.git 
@@ -364,19 +306,6 @@ sudo pacman -Syu clamtk clamav
 ##theme 
 yay -S darkly-bin catppuccin-gtk-theme-mocha qt6ct-kde rose-pine-hyprcursor
 yay -Sdd catppuccin-plasma-colorscheme-mocha
-
-#refind 
-cd /efi/EFI/refind/themes/
-git clone https://github.com/catppuccin/refind.git catppuccin
-nvim ../renfind.conf
-||
-include themes/catppuccin/mocha.conf
-||
-# tty
-nvim /boot/refind_linux.conf
-||
-"Boot with standard options"  "root=<..>=@ vt.default_red=30,243,166,249,137,245,148,186,88,243,166,249,137,245,148,166 vt.default_grn=30,139,227,226,180,194,226,194,91,139,227,226,180,194,226,173 vt.default_blu=46,168,161,175,250,231,213,222,112,168,161,175,250,231,213,200"
-||
 
 # nvim config 
 pacman -S imagemagick
