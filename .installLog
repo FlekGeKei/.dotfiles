@@ -307,5 +307,13 @@ sudo pacman -Syu clamtk clamav
 yay -S darkly-bin catppuccin-gtk-theme-mocha qt6ct-kde rose-pine-hyprcursor
 yay -Sdd catppuccin-plasma-colorscheme-mocha
 
+### qt5 cursor
+nvim ~/.icons/default/index.theme
+||
+[Icon Theme]
+Inherits=BreezeX-RosePine-Linux
+Name=BreezeX-RosePine-Linux
+||
+
 # nvim config 
 pacman -S imagemagick

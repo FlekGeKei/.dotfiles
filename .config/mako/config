@@ -18,7 +18,7 @@ max-icon-size=64
 markup=true
 actions=true
 format=<b>%s</b>\n%b
-default-timeout=1000
+default-timeout=8000
 ignore-timeout=false
 
 
