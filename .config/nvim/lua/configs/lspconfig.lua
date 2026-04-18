@@ -138,6 +138,7 @@ local servers = {
 	"glsl_analyzer",
 	"lua_ls",
 	"pylsp",
+	"jdtls",
 }
 
 vim.lsp.config("*", {
@@ -155,24 +156,16 @@ vim.lsp.config("jdtls", {
 			configuration = {
 				runtimes = {
 					{
-						name = "JavaSE-1.8",
-						path = "/usr/lib/jvm/java-8-temurin/",
-					},
-					{
-						name = "JavaSE-11",
-						path = "/usr/lib/jvm/java-11-temurin/",
-					},
-					{
-						name = "JavaSE-17",
-						path = "/usr/lib/jvm/java-17-temurin/",
+						name = "JavaSE-25",
+						path = "/usr/lib/jvm/java-25-temurin/",
 					},
 					{
 						name = "JavaSE-21",
 						path = "/usr/lib/jvm/java-21-temurin/",
 					},
 					{
-						name = "JavaSE-25",
-						path = "/usr/lib/jvm/java-25-temurin/",
+						name = "JavaSE-1.8",
+						path = "/usr/lib/jvm/java-8-temurin/",
 					},
 				},
 			},

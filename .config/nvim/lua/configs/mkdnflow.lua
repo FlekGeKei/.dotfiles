@@ -12,7 +12,7 @@ require("mkdnflow").setup({
 		paths = true,
 		tables = true,
 		yaml = false,
-		cmp = true,
+		completion = true,
 	},
 	perspective = {
 		priority = "current",

@@ -24,4 +24,4 @@ o.spell = true
 o.spelllang = "en_us"
 o.spelloptions = "noplainbuffer"
 
-vim.uv.os_setenv("JAVA_HOME",  "/usr/lib/jvm/java-21-temurin/")
+vim.uv.os_setenv("JAVA_HOME",  "/usr/lib/jvm/java-25-temurin/")
