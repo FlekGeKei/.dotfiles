@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+selected="fap"
+
+if ! tmux has-session -t=$selected 2> /dev/null; then 
+  tmux new-session -ds $selected
+
+  if [[ -z $TMUX ]]; then
+    tmux attach-session -t $selected
+    exit 0
+  fi
+fi
+
+if [[ -z $TMUX ]]; then
+  tmux attach-session -t $selected
+  exit 0
+fi
+
+tmux switch-client -t $selected

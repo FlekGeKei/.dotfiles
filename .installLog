@@ -7,7 +7,7 @@ fdisk /dev/nvme0n1
   g
   w
 cfdisk /dev/nvme0n1
-  efi 512M
+  efi 1G
   linux filesystem rest
 mkfs.vfat /dev/nvme0n1p1
 mkfs.btrfs -L "Arch Linux" /dev/nvme0n1p2 # -L is for refind
@@ -71,7 +71,7 @@ UUID=8C41-593A      	/boot      	vfat      	rw,relatime,fmask=0022,dmask=0022,co
 ||
 
 
-pacstrap -i /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft pacman-contrib
+pacstrap -K /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft pacman-contrib
 genfstab -U /mnt >> /mnt/etc/fstab
 # control all <options> specially for swap subvol
 cat /mnt/etc/fstab

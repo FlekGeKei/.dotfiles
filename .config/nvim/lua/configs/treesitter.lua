@@ -25,7 +25,6 @@ vim.filetype.add({
 	},
 })
 
-table.insert(langs, "plaintex")
 table.insert(langs, "tex")
 
 vim.api.nvim_create_autocmd("FileType", {

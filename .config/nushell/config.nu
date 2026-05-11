@@ -10,7 +10,6 @@ $env.PATH ++= [ "~/.local/bin", "~/.cargo/bin" ]
 
 alias l = ls -la
 alias y = yazi
-alias t = tmux new-session -s fag
 alias f = fzf --preview "fzf-preview {}"
 
 source ($nu.default-config-dir)/modules/catppuccin_mocha.nu
