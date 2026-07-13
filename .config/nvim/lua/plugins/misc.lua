@@ -21,20 +21,61 @@ return {
 		end,
 		keys = {
 			{ "<leader>ip", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
-			{
-				"<leader>pi",
-				function()
-					Snacks.picker.files({
-						ft = { "jpg", "jpeg", "png", "webp", "gif", "jxl" },
-						confirm = function(self, item, _)
-							self:close()
-							--require("img-clip").paste_image({ file_name = "%Y-%m-%d-%H-%M-%S.jxl" }, "./" .. item.file) -- ./ is necessary for img-clip to recognize it as path
-							require("img-clip").paste_image({ file_name = "%Y-%m-%d-%H-%M-%S.png" }, "./" .. item.file) -- ./ is necessary for img-clip to recognize it as path
-						end,
-					})
-				end,
-				desc = "[P]ick [I]mage",
+		},
+	},
+	{
+		"brenton-leighton/multiple-cursors.nvim",
+		version = "*", -- Use the latest tagged version
+		opts = {
+			custom_key_maps = {
+				{
+					"n",
+					"<Leader>\\",
+					function()
+						require("multiple-cursors").align()
+					end,
+				},
 			},
+		},
+		keys = {
+			{ "<C-j>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "x" }, desc = "Add cursor and move down" },
+			{ "<C-k>", "<Cmd>MultipleCursorsAddUp<CR>", mode = { "n", "x" }, desc = "Add cursor and move up" },
+			{
+				"<C-LeftMouse>",
+				"<Cmd>MultipleCursorsMouseAddDelete<CR>",
+				mode = { "n", "i" },
+				desc = "Add or remove cursor on mouse click",
+			},
+			{
+				"<C-Return>",
+				"<Cmd>MultipleCursorsAddDelete<CR>",
+				mode = { "n" },
+				desc = "Add a locked cursor or remove an existing cursor",
+			},
+			{
+				"<Leader>m",
+				"<Cmd>MultipleCursorsAddVisualArea<CR>",
+				mode = { "x" },
+				desc = "Add cursors to the lines of the visual area",
+			},
+
+			{ "<Leader>a", "<Cmd>MultipleCursorsAddMatches<CR>", mode = { "n", "x" }, desc = "Add cursors to cword" },
+			{
+				"<Leader>A",
+				"<Cmd>MultipleCursorsAddMatchesV<CR>",
+				mode = { "n", "x" },
+				desc = "Add cursors to cword in previous area",
+			},
+
+			{
+				"<Leader>d",
+				"<Cmd>MultipleCursorsAddJumpNextMatch<CR>",
+				mode = { "n", "x" },
+				desc = "Add cursor and jump to next cword",
+			},
+			{ "<Leader>D", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = { "n", "x" }, desc = "Jump to next cword" },
+
+			{ "<Leader>l", "<Cmd>MultipleCursorsLock<CR>", mode = { "n", "x" }, desc = "Lock virtual cursors" },
 		},
 	},
 }

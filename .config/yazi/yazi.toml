@@ -8,10 +8,15 @@ browser = [
 edit = [
 	{ run = "nvim %*", block = true, for = "unix", desc = "Edit" }
 ]
+play = [
+	{ run = "mpv --force-window %*", orphan = true, for = "unix", desc = "Play in MPV" }
+]
 
 [open]
 rules = [
 	{ url = "*flamegraph.svg", use = [ "browser", "open" ] },
-	{ mime = "image/jxl", use = [ "open" ] },
-	{ mime = "text/plain", use = [ "edit" ] }
+	{ mime = "image/*", use = [ "open" ] },
+	{ mime = "text/*", use = [ "edit" ] },
+	{ mime = "video/*", use = [ "play" ] },
+	{ mime = "audio/*", use = [ "play" ] }
 ]

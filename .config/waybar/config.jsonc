@@ -138,7 +138,7 @@
     "consume-icons": {
       "on": " "
     },
-    "format": " {stateIcon} {consumeIcon}{singleIcon} {artist} - {title} ",
+    "format": " {stateIcon} {consumeIcon}{singleIcon} {artist} – {title}",
     "format-disconnected": " Disconnected ",
     "format-stopped": " {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped",
     "interval": 10,
