@@ -24,4 +24,6 @@ o.spell = true
 o.spelllang = "en_us"
 o.spelloptions = "noplainbuffer"
 
+o.wrap = false
+
 vim.uv.os_setenv("JAVA_HOME",  "/usr/lib/jvm/java-25-temurin/")

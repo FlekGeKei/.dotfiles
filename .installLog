@@ -12,11 +12,9 @@ cfdisk /dev/nvme0n1
 mkfs.vfat /dev/nvme0n1p1
 mkfs.btrfs -L "Arch Linux" /dev/nvme0n1p2 # -L is for refind
 
-# for snapper (for timeshift use landout for archwiki)
 mount /dev/nvme0n1p2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@.snapshots
 btrfs subvolume create /mnt/@.swap
 btrfs subvolume create /mnt/@srv
 btrfs subvolume create /mnt/@var_log
@@ -31,14 +29,12 @@ mkdir -p /mnt/var/cache
 umount -R /mnt
 mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
-mount -o noatime,compress=zstd,subvol=@.snapshots /dev/nvme0n1p2 /mnt/.snapshots
 mount -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
 mount -o noatime,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
 mount -o noatime,compress=zstd,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cache
 mount /dev/nvme0n1p1 /mnt/boot
 btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
-genfstab -U /mnt >> /mnt/etc/fstab
 vim /mnt/etc/fstab 
 ||
 # <file system> <dir> <type> <options> <dump> <pass>
@@ -70,18 +66,25 @@ UUID=8C41-593A      	/boot      	vfat      	rw,relatime,fmask=0022,dmask=0022,co
 /.swap/swapfile		none		swap		defaults	0 0
 ||
 
-
-pacstrap -K /mnt base base-devel linux linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables iptables-nft pacman-contrib realtime-privileges
+pacstrap -K /mnt base base-devel linux linux-lts linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables pacman-contrib realtime-privileges ntp
 genfstab -U /mnt >> /mnt/etc/fstab
 # control all <options> specially for swap subvol
 cat /mnt/etc/fstab
+
+arch-chroot -S /mnt
 
 ln -sf /usr/share/zoneinfo/CET /etc/localtime
 hwclock --systohc
 nvim /etc/locale.gen
 locale-gen
 nvim /etc/locale.conf
+||
+LANG=en_US.UTF-8
+||
 nvim /etc/vconsole.conf
+||
+KEYMAP=us
+||
 echo "fgk" >> /etc/hostname
 nvim /etc/hosts
 ||
@@ -104,6 +107,7 @@ efibootmgr \
       --label "Arch Linux Limine Boot Loader" \
       --loader '\EFI\limine\BOOTX64.EFI' \
       --unicode
+blkid /dev/nvme0n1p2 >> /boot/EFI/limine/limine.conf
 nvim /boot/EFI/limine/limine.conf
 ||
 timeout: 5
@@ -159,13 +163,9 @@ swapoff /mnt/swap/swapfile
 umount -R /mnt 
 reboot
 
-chsh root
-# add to "ExecStart=..." in end "-t"
-systemctl edit --full grub-btrfsd
-systemctl enable grub-btrfsd
 timedatectl set-ntp true
-nvim /etc/pacman.conf 
-pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler igsc mesa bc jq speedcrunch drawy udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince keepassxc libreoffice-still thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland uwsm gamemode tmux xdg-desktop-portal-hyprland hyprpolkitagent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide mpd brightnessctl ttf-jetbrains-mono-nerd yazi poppler fd resvg
+
+pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler igsc mesa bc jq speedcrunch drawy udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince keepassxc libreoffice-still thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland hypridle hyprlock uwsm gamemode tmux xdg-desktop-portal-hyprland hyprpolkitagent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide mpd brightnessctl ttf-jetbrains-mono-nerd yazi poppler fd resvg
 
 pacman -S --asdeps libappindicator-gtk3 mpc mpd-mpris hyprland-qtutils
 yay -S waterfox-bin
@@ -211,7 +211,7 @@ rm -fr yay
 # for timeshift on wayland 
 pacman -S xorg-xhost 
 
-useradd -mG wheel,libvirt,realtime,video,audio,render flekgekei -s /bin/nu
+useradd -mG wheel,libvirt,realtime,video,audio,render flekgekei -s /bin/nu -c FlekGeKei
 passwd flekgekei
 
 # for laptops 
