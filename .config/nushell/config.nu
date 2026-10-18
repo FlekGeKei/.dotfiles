@@ -15,15 +15,12 @@ alias f = fzf --preview "fzf-preview {}"
 source ($nu.default-config-dir)/modules/catppuccin_mocha.nu
 source ($nu.default-config-dir)/modules/prompt.nu
 source ($nu.cache-dir)/zoxide.nu
+source ($nu.cache-dir)/carapace.nu
 
 [
 	nu_plugin_query
 	nu_plugin_gstat
 ] | each { plugin add $in }
-
-let carapace_completer = {|spans: list<string>|
-	CARAPACE_LENIENT=1 carapace $spans.0 nushell ...$spans | from json
-}
 
 $env.config = {
 	show_banner: false
@@ -49,10 +46,6 @@ $env.config = {
 	}
 	completions: {
 		algorithm: fuzzy
-		external: {
-			enable: true
-			completer: $carapace_completer
-		}
 	}
 }
 

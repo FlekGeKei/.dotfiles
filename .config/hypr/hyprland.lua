@@ -14,12 +14,13 @@ hl.monitor({
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme \"BreezeX-RosePine-Linux\"")
-  hl.exec_cmd("uwsm-app -- waybar")
   hl.exec_cmd("uwsm-app -- hyprpaper")
   hl.exec_cmd("uwsm-app -- udiskie -s -A --menu-update-workaround")
   hl.exec_cmd("uwsm-app -- wl-paste --type text --watch cliphist store")
   hl.exec_cmd("uwsm-app -- wl-paste --type image --watch cliphist store")
   hl.exec_cmd("uwsm-app -- /usr/bin/noisetorch -i -s alsa_input.pci-0000_00_1f.3.analog-stereo -t 95")
+	hl.exec_cmd("uwsm-app -- keepassxc", { workspace = "6 silent" })
+	hl.exec_cmd("hyprpm reload")
   hl.exec_cmd("kitty", { workspace = "1" })
 end)
 
@@ -29,7 +30,7 @@ hl.config({
     gaps_out = 2,
     border_size = 1,
     col = {
-      active_border = colors.red,
+      active_border = colors.sapphire,
       inactive_border = colors.surface0,
     },
     resize_on_border = false,
@@ -80,8 +81,8 @@ hl.config({
     force_no_accel = true,
     accel_profile = "flat",
     touchpad = {
-    natural_scroll = false,
-    disable_while_typing = false,
+			natural_scroll = false,
+			disable_while_typing = false,
     },
   },
   gestures = {
@@ -91,11 +92,20 @@ hl.config({
   },
 })
 
+-- "Smart gaps"
+hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
+hl.workspace_rule({ workspace = "f[1]", gaps_out = 0, gaps_in = 0 })
+hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, border_size = 0 })
+hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, rounding = 0 })
+hl.window_rule({ match = { float = false, workspace = "f[1]" }, border_size = 0 })
+hl.window_rule({ match = { float = false, workspace = "f[1]" }, rounding = 0 })
+
 hl.env("QT_QPA_PLATFORM", "wayland;xbc")
-hl.env("GTK_THEME", "catppuccin-mocha-red-standard+default")
 hl.env("XCURSOR_SIZE", "22")
 hl.env("HYPRCURSOR_SIZE", "22")
 hl.env("HYPRCURSOR_THEME", "rose-pine-hyprcursor")
+hl.env("GTK_USE_PORTAL", "1")
+hl.env("GDK_DEBUG", "portals")
 
 -- Default curves and animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
 hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1}    } })
@@ -135,7 +145,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit())
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager, { workspace = "unset" }))
 hl.bind(mainMod .. " + SPACE", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker | wl-copy"))
@@ -143,34 +153,24 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", actio
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/.cache/screen.png && cjxl ~/.cache/screen.png ~/Pictures/Screenshots/screen-$(date +%s).jxl && wl-copy < ~/.cache/screen.png && rm ~/.cache/screen.png"))
 hl.bind("Print", hl.dsp.exec_cmd("grim ~/.cache/screen.png && cjxl ~/.cache/screen.png ~/Pictures/Screenshots/screen-$(date +%s).jxl && wl-copy < ~/.cache/screen.png && rm ~/.cache/screen.png"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | bemenu -H 25 | cliphist decode | wl-copy"))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.local/bin/hprw"))
 
 hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "down" }))
 
-hl.bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }))
-hl.bind(mainMod .. " + 2", hl.dsp.focus({ workspace = 2 }))
-hl.bind(mainMod .. " + 3", hl.dsp.focus({ workspace = 3 }))
-hl.bind(mainMod .. " + 4", hl.dsp.focus({ workspace = 4 }))
-hl.bind(mainMod .. " + 5", hl.dsp.focus({ workspace = 5 }))
-hl.bind(mainMod .. " + 6", hl.dsp.focus({ workspace = 6 }))
-hl.bind(mainMod .. " + 7", hl.dsp.focus({ workspace = 7 }))
-hl.bind(mainMod .. " + 8", hl.dsp.focus({ workspace = 8 }))
-hl.bind(mainMod .. " + 9", hl.dsp.focus({ workspace = 9 }))
-hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
+hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" }))
 
-hl.bind(mainMod .. " + SHIFT + 1", hl.dsp.window.move({ workspace = 1 }))
-hl.bind(mainMod .. " + SHIFT + 2", hl.dsp.window.move({ workspace = 2 }))
-hl.bind(mainMod .. " + SHIFT + 3", hl.dsp.window.move({ workspace = 3 }))
-hl.bind(mainMod .. " + SHIFT + 4", hl.dsp.window.move({ workspace = 4 }))
-hl.bind(mainMod .. " + SHIFT + 5", hl.dsp.window.move({ workspace = 5 }))
-hl.bind(mainMod .. " + SHIFT + 6", hl.dsp.window.move({ workspace = 6 }))
-hl.bind(mainMod .. " + SHIFT + 7", hl.dsp.window.move({ workspace = 7 }))
-hl.bind(mainMod .. " + SHIFT + 8", hl.dsp.window.move({ workspace = 8 }))
-hl.bind(mainMod .. " + SHIFT + 9", hl.dsp.window.move({ workspace = 9 }))
-hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
+hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
+
+for i = 1, 10 do
+  local key = i % 10
+	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+end
 
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
@@ -215,6 +215,12 @@ hl.gesture({
   action = "workspace",
 })
 
+hl.window_rule({
+  match = {
+		xwayland = true,
+  },
+	no_blur = true,
+})
 hl.window_rule({
   name = "suppress-maximize-events",
   match = {
@@ -305,18 +311,18 @@ hl.window_rule({
 hl.window_rule({
   name = "keepassxc",
   match = {
-    title = "^(KeePassXC -)(.*)$",
-  },
-  float = true,
-})
-
-hl.window_rule({
-  name = "keepassxc-1",
-  match = {
     initial_class = "^(org.keepassxc.KeePassXC)$",
     initial_title = "^(.*)(KeePassXC)$",
   },
   workspace = "6",
+})
+hl.window_rule({
+  name = "keepassxc-float",
+  match = {
+    title = "^(Unlock Database - KeePassXC)$",
+  },
+  float = true,
+	workspace = "unset",
 })
 
 hl.window_rule({
@@ -338,14 +344,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  name = "file-picker",
-  match = {
-    title = "$(Open Files)$",
-  },
-  float = true,
-})
-
-hl.window_rule({
   name = "blueman",
   match = {
     initial_class = "^(blueman-manager)$",
@@ -357,10 +355,9 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  name = "pwvucontrol",
+  name = "pavucontrol",
   match = {
-    class = "^(com.saivert.pwvucontrol)$",
-    title = "^(Pipewire Volume Control)$",
+    class = "^(pavucontrol-qt)$",
   },
   float = true,
   size = "(monitor_w*0.43) (monitor_h*0.3703703703703704)",
@@ -368,14 +365,29 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  name = "pavucontrol",
+  name = "file-picker",
   match = {
-    class = "^(org.pulseaudio.pavucontrol)$",
+    title = "^(.*)(Open Files)(.*)$",
   },
   float = true,
-  size = "(monitor_w*0.43) (monitor_h*0.3703703703703704)",
-  move = "((monitor_w*0.5668)) ((monitor_h*0.028999999999999998))",
 })
+hl.window_rule({
+  name = "termfilechooser",
+  match = {
+    title = "^(termfilechooser)$",
+  },
+	workspace = "unset",
+  float = true,
+})
+hl.window_rule({
+  name = "zenity",
+  match = {
+    class = "^(zenity)$",
+  },
+  float = true,
+})
+
+
 
 hl.window_rule({
   name = "furryfox",
@@ -594,6 +606,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "steam-proton-wayland",
+  match = {
+		xdg_tag = "proton-game"
+  },
+  workspace = "10",
+	no_blur = true,
+})
+
+hl.window_rule({
   name = "steam-pick-game",
   match = {
     class = "^(Steam)",
@@ -711,4 +732,13 @@ hl.window_rule({
     class = "^(xdg-desktop-portal-)(.*)$",
   },
   float = true,
+})
+
+hl.window_rule({
+  name = "pz",
+  match = {
+    class = "Project Zomboid",
+  },
+  float = true,
+	workspace = "10",
 })

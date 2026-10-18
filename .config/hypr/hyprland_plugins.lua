@@ -5,11 +5,9 @@ local function rgba(color, alpha)
 end
 
 if hl.plugin.dynamic_cursors then
-	hl.config({ plugin = { dynamic_cursors = {
-		shake = {
-			enabled = false,
-		},
-	} } })
+	hl.config({ plugin = { dynamic_cursors = { shake = {
+		enabled = false,
+	} } } })
 end
 
 if hl.plugin.gloview then
@@ -34,10 +32,10 @@ if hl.plugin.gloview then
 				hover_border_size = 1,
 				select_border_size = 1,
 
-				strip_active_border = colors.red,
-				strip_hover_border = colors.red,
-				hover_border = colors.red,
-				select_border = colors.red,
+				strip_active_border = colors.sapphire,
+				strip_hover_border = colors.sapphire,
+				hover_border = colors.sapphire,
+				select_border = colors.sapphire,
 
 				backdrop_color = rgba(colors.crustAlpha, "E6"),
 				strip_band_color = rgba(colors.mantleAlpha, "CC"),

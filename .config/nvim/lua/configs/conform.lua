@@ -32,6 +32,8 @@ require("conform").setup({
 		bash = { "beautysh" },
 		sh = { "beautysh" },
 		zsh = { "beautysh" },
-		gdscript = { 'gdformat' },
+		gdscript = { "gdformat" },
+		tex = { "prettier" },
+		plaintex = { "prettier" },
 	},
 })

@@ -6,10 +6,10 @@ browser = [
 	{ run = "waterfox %s", orphan = true, for = "unix", desc = "Open with browser" }
 ]
 edit = [
-	{ run = "nvim %*", block = true, for = "unix", desc = "Edit" }
+	{ run = "nvim %s", block = true, for = "unix", desc = "Edit" }
 ]
 play = [
-	{ run = "mpv --force-window %*", orphan = true, for = "unix", desc = "Play in MPV" }
+	{ run = "mpv --force-window %s", orphan = true, for = "unix", desc = "Play in MPV" }
 ]
 
 [open]
@@ -17,6 +17,8 @@ rules = [
 	{ url = "*flamegraph.svg", use = [ "browser", "open" ] },
 	{ mime = "image/*", use = [ "open" ] },
 	{ mime = "text/*", use = [ "edit" ] },
+	{ mime = "application/wine-extension-ini", use = [ "edit" ] },
+	{ mime = "application/json", use = [ "edit" ] },
 	{ mime = "video/*", use = [ "play" ] },
 	{ mime = "audio/*", use = [ "play" ] }
 ]

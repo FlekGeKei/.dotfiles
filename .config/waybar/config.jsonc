@@ -148,7 +148,7 @@
     "on-click-right": "mpc next",
     "on-scroll-down": "mpc volume -1",
     "on-scroll-up": "mpc volume +1",
-    "port": "6600",
+    "port": 6600,
     "random-icons": {
       "off": "<span color=\"#f53c3c\"></span> ",
       "on": " "
@@ -204,7 +204,7 @@
     ],
     "format-muted": " ",
     "max-volume": 150,
-    "on-click": "pavucontrol",
+    "on-click": "pavucontrol-qt",
     "scroll-step": 1
   }
 }
