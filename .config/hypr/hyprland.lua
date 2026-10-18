@@ -317,9 +317,19 @@ hl.window_rule({
   workspace = "6",
 })
 hl.window_rule({
+  name = "keepassxc-unlock",
+  match = {
+    class = "^(org.keepassxc.KeePassXC)$",
+    title = "^(Unlock Database - KeePassXC)$",
+  },
+  float = true,
+	workspace = "unset",
+})
+hl.window_rule({
   name = "keepassxc-float",
   match = {
-    title = "^(Unlock Database - KeePassXC)$",
+    class = "^(org.keepassxc.KeePassXC)$",
+    title = "^(KeePassXC -)(.*)$",
   },
   float = true,
 	workspace = "unset",
