@@ -7,19 +7,17 @@ if status is-login
 		uwsm start default
 	end
 
-	# ENVS
-	set -gx FZF_DEFAULT_OPTS "--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8,fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC,marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8,selected-bg:#45475A,border:#313244,label:#CDD6F4"
-	set -gx EDITOR "nvim"
-	set -gx CARGO_NET_GIT_FETCH_WITH_CLI true
-	set -gx SSH_AGENT_PID ""
-	set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
-		
 	# PATHS
 	fish_add_path ~/.local/bin
 	fish_add_path ~/.cargo/binc
 end
 
 if status is-interactive
+	# ENVS
+	set -gx FZF_DEFAULT_OPTS "--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8,fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC,marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8,selected-bg:#45475A,border:#313244,label:#CDD6F4"
+	set -gx EDITOR "nvim"
+	set -gx CARGO_NET_GIT_FETCH_WITH_CLI true
+
 	# FUNCS
 	alias l="ls -la"
 	alias y="yazi"
