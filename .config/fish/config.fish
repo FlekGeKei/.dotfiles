@@ -21,15 +21,9 @@ end
 
 if status is-interactive
 	# FUNCS
-	function l 
-		ls -la
-	end
-	function y
-		yazi
-	end
-	function f 
-		fzf --preview "fzf-preview {}"
-	end
+	alias l="ls -la"
+	alias y="yazi"
+	alias f="fzf --preview 'fzf-preview {}'"
 
 	# STARSHIP
 	function starship_transient_rprompt_func
