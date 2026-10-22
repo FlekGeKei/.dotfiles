@@ -16,22 +16,16 @@ mount /dev/nvme0n1p2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@.swap
-btrfs subvolume create /mnt/@srv
+btrfs subvolume create /mnt/@tmp
 btrfs subvolume create /mnt/@var_log
 btrfs subvolume create /mnt/@var_cache
 umount /mnt
 mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
-mkdir -p /mnt/home
-mkdir -p /mnt/.swap
-mkdir -p /mnt/srv
-mkdir -p /mnt/var/log
-mkdir -p /mnt/var/cache
-umount -R /mnt
-mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
-mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
-mount -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
-mount -o noatime,nodatacow,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
-mount -o noatime,nodatacow,compress=zstd,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cache
+mount --mkdir -o noatime,nodatacow,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
+mount --mkdir -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
+mount --mkdir -o noatime,nodatacow,subvol=@tmp /dev/nvme0n1p2 /mnt/tmp
+mount --mkdir -o noatime,nodatacow,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
+mount --mkdir -o noatime,nodatacow,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cache
 mount /dev/nvme0n1p1 /mnt/boot
 btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
@@ -165,7 +159,7 @@ reboot
 
 timedatectl set-ntp true
 
-pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler igsc mesa bc jq speedcrunch drawy udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince keepassxc libreoffice-still thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland hyprpm uwsm gamemode lib32-gamemode tmux xdg-desktop-portal-hyprland hyprpolkitagent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt zoxide mpd brightnessctl ttf-jetbrains-mono-nerd yazi poppler fd resvg
+pacman -Syu flatpak blueman bluez fzf zip unzip intel-gpu-tools intel-compute-runtime intel-graphics-compiler igsc mesa bc jq speedcrunch drawy udiskie kitty mpv bemenu telegram-desktop qbittorrent waybar imv grim slurp gimp evince keepassxc libreoffice-still thunderbird steam prismlauncher hyprcursor breeze breeze-gtk breeze-icons ttf-noto-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk wine winetricks fuse btop hyprland hyprpm uwsm gamemode lib32-gamemode tmux xdg-desktop-portal-hyprland hyprpolkitagent polkit qemu virt-manager qemu-full dnsmasq bridge-utils fastfetch mako ripgrep eza hyprpaper exa ncdu jre8-openjdk jre21-openjdk jre17-openjdk nwg-look pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber qt5-wayland qt6-wayland wl-clipboard cliphist veracrypt mpd brightnessctl ttf-jetbrains-mono-nerd yazi poppler fd resvg
 
 pacman -S --asdeps libappindicator-gtk3 mpc mpd-mpris hyprland-qtutils
 yay -S waterfox-bin
@@ -196,6 +190,9 @@ nvim /etc/snapper/configs/root
 # nushell
 pacman -S nushell
 yay -S carapace-bin
+
+# fish
+pacman -S fish starship
 
 # put '!' behind debug flag in makepkg.cfg like hire:
 # OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug !lto)

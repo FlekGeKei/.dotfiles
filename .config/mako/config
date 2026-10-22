@@ -5,7 +5,7 @@ on-notify=exec mpv /usr/share/sounds/freedesktop/stereo/message-new-instant.oga
 layer=overlay
 anchor=top-right
 
-font=NotoSans Nerd Font 11
+font=JetBrainsMono Nerd Font 11
 width=300
 height=100
 margin=10
@@ -31,7 +31,7 @@ icon-location=left
 history=1
 text-alignment=left
 
-# Colors -- catppuccin-mocha-red
+# Colors -- catppuccin-mocha-sapphire
  
 background-color=#1e1e2e
 text-color=#cdd6f4
