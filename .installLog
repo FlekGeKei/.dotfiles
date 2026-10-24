@@ -21,7 +21,7 @@ btrfs subvolume create /mnt/@var_log
 btrfs subvolume create /mnt/@var_cache
 umount /mnt
 mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
-mount --mkdir -o noatime,nodatacow,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
+mount --mkdir -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 mount --mkdir -o noatime,nodatacow,subvol=@.swap /dev/nvme0n1p2 /mnt/.swap
 mount --mkdir -o noatime,nodatacow,subvol=@tmp /dev/nvme0n1p2 /mnt/tmp
 mount --mkdir -o noatime,nodatacow,compress=zstd,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
@@ -29,36 +29,6 @@ mount --mkdir -o noatime,nodatacow,subvol=@var_cache /dev/nvme0n1p2 /mnt/var/cac
 mount /dev/nvme0n1p1 /mnt/boot
 btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile 
-vim /mnt/etc/fstab 
-||
-# <file system> <dir> <type> <options> <dump> <pass>
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/         	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=256,subvol=/@	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/home     	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=257,subvol=/@home	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/.snapshots	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=258,subvol=/@.snapshots	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/.swap    	btrfs     	rw,noatime,nodatacow,ssd,discard=async,space_cache=v2,subvolid=259,subvol=/@.swap	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/srv    	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=260,subvol=/@srv	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/log  	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=261,subvol=/@var_log	0 0
-
-# /dev/nvme0n1p2
-UUID=a27ab598-dfd9-4fc5-ac64-efe8d895a9d4	/var/cache	btrfs     	rw,noatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=262,subvol=/@var_cache	0 0
-
-# /dev/nvme0n1p1
-UUID=8C41-593A      	/boot      	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
-
-# /.swap/swapfile
-/.swap/swapfile		none		swap		defaults	0 0
-||
 
 pacstrap -K /mnt base base-devel linux linux-lts linux-firmware git wget curl btrfs-progs neovim networkmanager intel-ucode/amd-ucode man nftables pacman-contrib realtime-privileges ntp
 genfstab -U /mnt >> /mnt/etc/fstab

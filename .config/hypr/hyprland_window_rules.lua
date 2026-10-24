@@ -173,6 +173,7 @@ hl.window_rule({
   },
 	workspace = "unset",
   float = true,
+	stay_focused = true,
 })
 hl.window_rule({
   name = "zenity",
@@ -181,8 +182,6 @@ hl.window_rule({
   },
   float = true,
 })
-
-
 
 hl.window_rule({
   name = "furryfox",
@@ -366,7 +365,6 @@ hl.window_rule({
   name = "steam-1",
   match = {
     class = "^(steam)$",
-    title = "^(.*)$",
   },
   float = true,
 })
@@ -394,7 +392,6 @@ hl.window_rule({
   name = "steam-proton",
   match = {
     class = "^(steam_app_)(.*)$",
-    title = "^(.*)$",
   },
   workspace = "10",
   fullscreen = true,
@@ -407,6 +404,14 @@ hl.window_rule({
   },
   workspace = "10",
 	no_blur = true,
+})
+hl.window_rule({
+  name = "steam-proton-wayland-titanfall2",
+	match = {
+		class = "titanfall2.exe",
+		title = "Titanfall 2"
+	},
+	fullscreen = true,
 })
 
 hl.window_rule({
