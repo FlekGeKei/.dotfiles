@@ -184,7 +184,21 @@ passwd flekgekei
 # for laptops 
 echo -e "\nHandleLidSwitch=ignore" >> /etc/systemd/logind.conf
 ## ASUS
-echo 1 > /sys/devices/platform/asus-nb-wmi/hwmon/hwmon[[:print:]]*/device/throttle_thermal_policy # Possible values are 0 (default), 1 (overboost), and 2 (silent).
+nvim /etc/systemd/asus-thermal-policy.service
+||
+[Unit]
+Description=Set ASUS thermal policy
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo 1 > /sys/devices/platform/asus-nb-wmi/throttle_thermal_policy'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+||
+doas systemctl enable asus-thermal-policy
 
 ### for my dotfiles
 

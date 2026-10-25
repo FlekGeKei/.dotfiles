@@ -106,7 +106,6 @@ hl.window_rule({
     title = "^(Unlock Database - KeePassXC)$",
   },
   float = true,
-	stay_focused = true,
 	workspace = "unset",
 })
 hl.window_rule({
@@ -116,7 +115,6 @@ hl.window_rule({
     title = "^(KeePassXC -)(.*)$",
   },
   float = true,
-	stay_focused = true,
 	workspace = "unset",
 })
 

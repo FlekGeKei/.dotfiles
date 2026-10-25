@@ -17,6 +17,8 @@ hl.env("HYPRCURSOR_SIZE", "22")
 hl.env("HYPRCURSOR_THEME", "rose-pine-hyprcursor")
 hl.env("GTK_USE_PORTAL", "1")
 hl.env("GDK_DEBUG", "portals")
+hl.env("SSH_AUTH_SOCK", "/run/user/1000/gnupg/S.gpg-agent.ssh")
+hl.env("SSH_AGENT_PID", "")
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme \"BreezeX-RosePine-Linux\"")
